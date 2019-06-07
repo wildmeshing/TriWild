@@ -1,0 +1,12 @@
+[submodule "extern/geogram"]
+	path = extern/geogram
+	url = https://github.com/alicevision/geogram.git
+[submodule "extern/libigl"]
+	path = extern/libigl
+	url = https://github.com/libigl/libigl.git
+[submodule "extern/nlopt"]
+	path = extern/nlopt
+	url = https://github.com/stevengj/nlopt.git
+[submodule "extern/aabbcc"]
+	path = extern/aabbcc
+	url = https://github.com/lohedges/aabbcc.git

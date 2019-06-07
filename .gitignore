@@ -1,0 +1,8 @@
+*build*
+xcode*
+.idea
+
+bin
+bin_rel
+
+*.DS_Store*
