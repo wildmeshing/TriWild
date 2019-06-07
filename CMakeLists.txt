@@ -31,6 +31,13 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 #ADD_DEFINITIONS("-D_DLL")
 
+include(TriWildDownloadExternal)
+
+triwild_download_aabbcc()
+triwild_download_geogram()
+triwild_download_igl()
+triwild_download_nlopt()
+
 ################################################################################
 # 3rd party libraries
 ################################################################################
@@ -51,16 +58,16 @@ option(LIBIGL_WITH_LIM               "Use LIM"            OFF)
 option(LIBIGL_WITH_MATLAB            "Use Matlab"         OFF)
 option(LIBIGL_WITH_MOSEK             "Use MOSEK"          OFF)
 option(LIBIGL_WITH_XML               "Use XML"            OFF)
-option(LIBIGL_WITH_PNG               "Use PNG"            ON)
+option(LIBIGL_WITH_PNG               "Use PNG"            OFF)
 option(LIBIGL_WITH_PYTHON            "Use Python"         OFF)
 option(LIBIGL_WITH_TETGEN            "Use Tetgen"         OFF)
 option(LIBIGL_WITH_TRIANGLE          "Use Triangle"       ON)
 
 # gui
-option(LIBIGL_WITH_OPENGL            "Use OpenGL"         ON)
-option(LIBIGL_WITH_OPENGL_GLFW       "Use GLFW"           ON)
-option(LIBIGL_WITH_OPENGL_GLFW_IMGUI "Use ImGui"          ON)
-option(LIBIGL_WITH_VIEWER            "Use OpenGL viewer"  ON)
+option(LIBIGL_WITH_OPENGL            "Use OpenGL"         OFF)
+option(LIBIGL_WITH_OPENGL_GLFW       "Use GLFW"           OFF)
+option(LIBIGL_WITH_OPENGL_GLFW_IMGUI "Use ImGui"          OFF)
+option(LIBIGL_WITH_VIEWER            "Use OpenGL viewer"  OFF)
 
 find_package(LIBIGL REQUIRED QUIET)
 find_package(GMP)
@@ -116,7 +123,7 @@ add_subdirectory(${THIRD_PARTY_DIR}/nlopt)
 
 add_library(triwild_lib  ${SOURCE_FILES})
 target_include_directories(triwild_lib PUBLIC ${GMP_INCLUDE_DIRS})
-target_link_libraries(triwild_lib PUBLIC geogram igl::core igl::png ${GMP_LIBRARIES} igl::triangle nlopt igl::opengl_glfw_imgui)
+target_link_libraries(triwild_lib PUBLIC geogram igl::core ${GMP_LIBRARIES} igl::triangle nlopt)
 
 
 #add_executable(TriWild main.cpp UIPanel.hpp UIPanel.cpp)

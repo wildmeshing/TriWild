@@ -6,3 +6,10 @@ bin
 bin_rel
 
 *.DS_Store*
+
+
+extern/.cache/
+extern/aabbcc/
+extern/geogram/
+extern/libigl/
+extern/nlopt/
