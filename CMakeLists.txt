@@ -126,6 +126,13 @@ include(geogram)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	target_compile_definitions(triwild_lib PUBLIC -D_ENABLE_EXTENDED_ALIGNED_STORAGE)
+
+	# If we use static library, we link with the static C++ runtime.
+	foreach(config ${CMAKE_CONFIGURATION_TYPES})
+		string(TOUPPER ${config} config)
+		string(REPLACE /MD /MT CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
+		string(REPLACE /MD /MT CMAKE_CXX_FLAGS_${config} "${CMAKE_CXX_FLAGS_${config}}")
+	endforeach()
 endif()
 
 
