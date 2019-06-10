@@ -72,6 +72,7 @@ IF(NOT ${GMP_FOUND})
         MESSAGE(FATAL_ERROR "Cannot find GMP")
 ENDIF()
 
+
 ################################################################################
 
 set(SOURCE_FILES
@@ -121,6 +122,12 @@ add_library(triwild_lib  ${SOURCE_FILES})
 
 # Geogram library
 include(geogram)
+
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	target_compile_definitions(triwild_lib -D_ENABLE_EXTENDED_ALIGNED_STORAGE)
+endif()
+
 
 target_include_directories(triwild_lib PUBLIC ${GMP_INCLUDE_DIRS})
 target_link_libraries(triwild_lib PUBLIC geogram igl::core ${GMP_LIBRARIES} igl::triangle nlopt)
