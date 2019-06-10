@@ -60,3 +60,33 @@ endfunction()
 
 
 
+
+
+## GMP for windows
+function(triwild_download_gmp_cygwin)
+    triwild_download_project(gmp
+        URL https://cs.nyu.edu/~exact/core/gmp/gmp-static-cygwin-4.1.tar.gz
+        URL_MD5        3c1454c7bf57f71d7c90190ce133bdbe
+    )
+endfunction()
+
+
+## GMP for windows
+function(triwild_download_gmp_mingw)
+    triwild_download_project(gmp
+        URL https://cs.nyu.edu/~exact/core/gmp/gmp-static-mingw-4.1.tar.gz
+        URL_MD5        bef87e429338a4568a6c1321fcecadcd
+    )
+endfunction()
+
+
+## GMP for windows
+function(triwild_download_gmp_vc)
+    triwild_download_project(gmp
+        URL https://cs.nyu.edu/~exact/core/gmp/gmp-static-vc-4.1.2.zip
+        URL_MD5        06e9efda0da0259de47c5bc0f8be81e4
+    )
+endfunction()
+
+
+
