@@ -42,10 +42,6 @@ triwild_download_nlopt()
 # 3rd party libraries
 ################################################################################
 
-
-# Geogram library
-include(geogram)
-
 # libigl library
 # libigl
 option(LIBIGL_USE_STATIC_LIBRARY "Use libigl as static library" OFF)
@@ -122,8 +118,13 @@ add_subdirectory(${THIRD_PARTY_DIR}/nlopt)
 
 
 add_library(triwild_lib  ${SOURCE_FILES})
+
+# Geogram library
+include(geogram)
+
 target_include_directories(triwild_lib PUBLIC ${GMP_INCLUDE_DIRS})
 target_link_libraries(triwild_lib PUBLIC geogram igl::core ${GMP_LIBRARIES} igl::triangle nlopt)
+
 
 
 #add_executable(TriWild main.cpp UIPanel.hpp UIPanel.cpp)
