@@ -63,6 +63,7 @@ namespace triwild {
         bool is_preserving_feature = false;
 
         bool enable_debug_mesh = false;
+        bool output_linear = false;
     };
 
     extern Arguments args;
