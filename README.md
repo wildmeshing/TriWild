@@ -5,11 +5,11 @@ Yixin Hu, Teseo Schneider, Xifeng Gao, Qingnan Zhou, Alec Jacobson, Denis Zorin,
 ACM Transactions on Graphics (SIGGRAPH 2019).
 
 ## Dataset
-#### Data for Figures in the Paper
+### Data for Figures in the Paper
 
-(todo: after parameters are finalized)
+Download [zip](https://drive.google.com/file/d/13xZqYpBz1cV1JaakgkcSO6hSbV9or5V4/view?usp=sharing).
 
-#### 20k Openclip Dataset
+### 20k Openclip Dataset
 
 Input(todo): [19686 meshes (.obj) each with a curved feature file (.json)]()
 
@@ -106,6 +106,7 @@ Options:
   --cut-outside               Remove "outside part".
   --skip-eps                  Skip saving eps.
   --cut-holes TEXT            Input a .xyz file for specifying points inside holes you want to remove.
+  --output-linear-mesh        Output linear mesh for curved pipeline.
 ```
 
 More details about some important parameters:
