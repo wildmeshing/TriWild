@@ -125,7 +125,7 @@ include(geogram)
 
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-	target_compile_definitions(triwild_lib -D_ENABLE_EXTENDED_ALIGNED_STORAGE)
+	target_compile_definitions(triwild_lib PUBLIC -D_ENABLE_EXTENDED_ALIGNED_STORAGE)
 endif()
 
 
