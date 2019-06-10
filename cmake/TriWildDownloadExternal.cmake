@@ -27,7 +27,7 @@ endfunction()
 function(triwild_download_aabbcc)
     triwild_download_project(aabbcc
         GIT_REPOSITORY https://github.com/Yixin-Hu/aabbcc
-        GIT_TAG        91838aff841627472e78328a79e6800c7bc1678b
+        GIT_TAG        master
     )
 endfunction()
 
