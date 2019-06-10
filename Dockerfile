@@ -2,7 +2,7 @@
 FROM ubuntu
 
 # Install any needed packages specified in requirements.txt
-RUN apt-get update && apt-get install -y git cmake g++ libcgal-dev
+RUN apt-get update && apt-get install -y git cmake g++
 
 # Set the working directory to /app
 WORKDIR /app
