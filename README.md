@@ -5,9 +5,11 @@ Yixin Hu, Teseo Schneider, Xifeng Gao, Qingnan Zhou, Alec Jacobson, Denis Zorin,
 ACM Transactions on Graphics (SIGGRAPH 2019).
 
 ## Dataset
-### Data for Figures in the Paper
+### Examples in the Paper
 
 Download [zip](https://drive.google.com/file/d/13xZqYpBz1cV1JaakgkcSO6hSbV9or5V4/view?usp=sharing).
+
+💡💡💡Quickly try TriWild on some small exmaples here!!
 
 ### 20k Openclip Dataset
 
