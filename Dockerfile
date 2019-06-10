@@ -2,7 +2,7 @@
 FROM ubuntu
 
 # Install any needed packages specified in requirements.txt
-RUN apt-get update && apt-get install -y git cmake g++
+RUN apt-get update && apt-get install -y git cmake g++ libgmp3-dev
 
 # Set the working directory to /app
 WORKDIR /app
