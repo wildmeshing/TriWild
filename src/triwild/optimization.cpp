@@ -716,7 +716,7 @@ void triwild::optimization::output_mesh(MeshData& mesh) {
 
     if(args.is_preserving_feature)
         write_msh(mesh, args.output + "_curved.msh");
-    else{
+    if(!args.is_preserving_feature || args.output_linear) {
         Eigen::VectorXd V;
         Eigen::VectorXi F;
 

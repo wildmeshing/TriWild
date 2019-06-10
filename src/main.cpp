@@ -42,6 +42,8 @@ int main(int argc, char* argv[]) {
     std::string hole_file;
     app.add_option("--cut-holes", hole_file, "Input a .xyz file for specifying points inside holes you want to remove.");
 
+    app.add_flag("--output-linear-mesh", args.output_linear, "Output linear mesh for curved pipeline.");
+
     try {
         app.parse(argc, argv);
     }
