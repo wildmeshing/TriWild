@@ -7,10 +7,15 @@ branches:
   only:
     - master
 environment:
+  APPVEYOR_RDP_PASSWORD: twld.paAss126.
   matrix:
   - config: Debug
 build:
   parallel: true
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 build_script:
   - cd c:\projects\triwild
   - mkdir build
