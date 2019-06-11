@@ -23,7 +23,7 @@ Download [zip](https://drive.google.com/file/d/13xZqYpBz1cV1JaakgkcSO6hSbV9or5V4
 
 ### 20k Openclip Dataset
 
-Input(todo): [19686 meshes (.obj) each with a curved feature file (.json)]()
+Input: [19686 meshes (.obj) each with a curved feature file (.json)](https://drive.google.com/file/d/1yhrJtfCVMahwgPc0pmX0D8GAJgZ9M7v9/view?usp=sharing)
 
 Output with curved constrains: [19685 meshes (.msh)](https://drive.google.com/open?id=189OP5v5EJNP9QMqpWw_XuGRK_MjMThuJ)
 
