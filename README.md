@@ -4,9 +4,11 @@
 Yixin Hu, Teseo Schneider, Xifeng Gao, Qingnan Zhou, Alec Jacobson, Denis Zorin, Daniele Panozzo.
 ACM Transactions on Graphics (SIGGRAPH 2019).
 
-## Important Tips
-
 [![Build Status](https://travis-ci.org/wildmeshing/TriWild.svg?branch=master)](https://travis-ci.org/wildmeshing/TriWild)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/TriWild?svg=true)](https://ci.appveyor.com/api/projects/status/github/TriWild?svg=true)
+[![Build Status](https://img.shields.io/docker/cloud/build/yixinhu/triwild.svg)](https://img.shields.io/docker/cloud/build/yixinhu/triwild.svg)
+
+## Important Tips
 
 💡💡💡 We also have 3D version of "TriWild" - **TetWild**! It's the parent of TriWild. TetWild can generate linear tetrahedral meshes robustly and automatically. Check it out 👉 **[TetWild](https://github.com/Yixin-Hu/TetWild)**.
 
