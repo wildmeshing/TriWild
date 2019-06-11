@@ -6,6 +6,8 @@ ACM Transactions on Graphics (SIGGRAPH 2019).
 
 ## Important Tips
 
+[![Build Status](https://travis-ci.org/wildmeshing/TriWild.svg?branch=master)](https://travis-ci.org/wildmeshing/TriWild)
+
 💡💡💡 We also have 3D version of "TriWild" - **TetWild**! It's the parent of TriWild. TetWild can generate linear tetrahedral meshes robustly and automatically. Check it out 👉 **[TetWild](https://github.com/Yixin-Hu/TetWild)**.
 
 💡💡💡 If you are interested in the algorithm details, please refer to our **[paper](https://cs.nyu.edu/~yixinhu/triwild.pdf)** first. We provide plenty of examples and statistics in the paper.
