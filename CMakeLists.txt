@@ -42,7 +42,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 		string(REPLACE /MDd /MTd CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
 		string(REPLACE /MDd /MTd CMAKE_CXX_FLAGS_${config} "${CMAKE_CXX_FLAGS_${config}}")
 	endforeach()
-enqdif()
+endif()
 
 triwild_download_aabbcc()
 triwild_download_geogram()
@@ -146,7 +146,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 		string(REPLACE /MDd /MTd CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
 		string(REPLACE /MDd /MTd CMAKE_CXX_FLAGS_${config} "${CMAKE_CXX_FLAGS_${config}}")
 	endforeach()
-enqdif()
+endif()
 
 
 target_include_directories(triwild_lib PUBLIC ${GMP_INCLUDE_DIRS})
