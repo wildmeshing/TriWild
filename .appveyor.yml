@@ -18,6 +18,8 @@ on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 build_script:
   - C:\Miniconda3-x64\Scripts\conda.exe install -c conda-forge mpir -y
+  - SET GMP_INC=C:\Miniconda3-x64\Library\include
+  - SET GMP_LIB=C:\Miniconda3-x64\Library\lib
   - cd c:\projects\triwild
   - mkdir build
   - cd build
