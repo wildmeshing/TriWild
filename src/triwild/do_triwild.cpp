@@ -11,7 +11,7 @@
 
 #include "do_triwild.h"
 
-void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in,
+void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in, const json& feature_info,
                          Eigen::MatrixXd &V_out, Eigen::MatrixXi &F_out, Eigen::MatrixXd& nodes, std::vector<std::vector<int>>& F_nodes,
                          double stop_quality, int max_its, int stage,
                          double epsilon, double feature_epsilon,
@@ -125,7 +125,9 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     load_mesh_time = igl_timer.getElapsedTime();
     igl_timer.start();
 
-    if (feature::init(args.feature_input))
+//    if (feature::init(args.feature_input))
+//        args.is_preserving_feature = true;
+    if(feature::init(feature_info))
         args.is_preserving_feature = true;
 
     if (args.stop_quality < 0)

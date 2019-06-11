@@ -34,7 +34,7 @@ namespace triwild {
 
 using namespace triwild;
 
-bool triwild::feature::init(const std::string& feature_file){
+bool triwild::feature::init(const std::string& feature_file) {
     json feature_info = json({});
     if (feature_file != "") {
         std::ifstream file(feature_file);
@@ -46,6 +46,49 @@ bool triwild::feature::init(const std::string& feature_file){
         }
         file.close();
     } else
+        return false;
+
+    return init(feature_info);
+
+//    std::vector<int> tmp = {4179, 4189};//2321, 2322,1295, 1346,  4179, 4189
+//    for (int i = 0; i < feature_info.size(); i++) {
+////        if(std::find(tmp.begin(), tmp.end(), i) != tmp.end())
+////            continue;
+//        std::vector<int> v_ids;
+//        v_ids.reserve(feature_info[i]["v_ids"].size());
+//        for (int j = 0; j < feature_info[i]["v_ids"].size(); j++)
+//            v_ids.push_back((int) feature_info[i]["v_ids"][j]);
+//        std::vector<double> paras;
+//        paras.reserve(feature_info[i]["paras"].size());
+//        for (int j = 0; j < feature_info[i]["paras"].size(); j++)
+//            paras.push_back((double) feature_info[i]["paras"][j]);
+//
+//        if (feature_info[i]["type"] == "Line") {
+//            features.push_back(std::make_shared<Line_Feature>(v_ids, paras,
+//                                                              json2point(feature_info[i]["start"]),
+//                                                              json2point(feature_info[i]["end"]),
+//                                                              feature_info[i]["curve_id"]));
+//        } else if (feature_info[i]["type"] == "RationalBezier") {
+//            features.push_back(std::make_shared<RationalBezierCurve_Feature>(v_ids, paras,
+//                                                                             json2d2ctrlvector(
+//                                                                                     feature_info[i]["poles"]),
+//                                                                             json1d2ctrlvector(
+//                                                                                     feature_info[i]["weigths"]),
+//                                                                             feature_info[i]["curve_id"]));
+//        } else if (feature_info[i]["type"] == "BezierCurve") {
+//            features.push_back(std::make_shared<BezierCurve_Feature>(v_ids, paras,
+//                                                                     feature_info[i]["degree"],
+//                                                                     json2d2ctrlvector(feature_info[i]["poles"]),
+//                                                                     feature_info[i]["curve_id"]));
+//        } else {
+//            cout << "Unknown curve typle " << feature_info[i]["type"] << " will not be preserved" << endl;
+//        }
+//    }
+//    return true;
+}
+
+bool triwild::feature::init(json& feature_info){
+    if(feature_info.empty())
         return false;
 
     std::vector<int> tmp = {4179, 4189};//2321, 2322,1295, 1346,  4179, 4189

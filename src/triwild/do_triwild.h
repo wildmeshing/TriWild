@@ -20,9 +20,10 @@
 #include "feature.h"
 #include "triangulation.h"
 
+using json = nlohmann::json;
 
 namespace triwild {
-    void do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in,
+    void do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in, const json& feature_info,
                     Eigen::MatrixXd &V_out, Eigen::MatrixXi &F_out, Eigen::MatrixXd& nodes, std::vector<std::vector<int>>& F_nodes,
                     double stop_quality, int max_its, int stage,
                     double epsilon, double feature_epsilon,

@@ -27,6 +27,7 @@ namespace triwild {
         extern double feature_eps_2;
 
         bool init(const std::string& feature_file);
+        bool init(json& feature_info);
         void map_feature2mesh(MeshData& mesh);
         bool is_on_segment(const Point_2& p, const Point_2& p1, const Point_2& p2);
 
