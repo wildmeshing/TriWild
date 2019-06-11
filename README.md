@@ -6,7 +6,7 @@ ACM Transactions on Graphics (SIGGRAPH 2019).
 
 [![Build Status](https://travis-ci.org/wildmeshing/TriWild.svg?branch=master)](https://travis-ci.org/wildmeshing/TriWild)
 [![Build status](https://ci.appveyor.com/api/projects/status/3k8lru312sw46hs5/branch/master?svg=true)](https://ci.appveyor.com/project/YixinHu69838/triwild/branch/master)
-[![Build Status](https://img.shields.io/docker/cloud/build/yixinhu/triwild.svg)](https://img.shields.io/docker/cloud/build/yixinhu/triwild.svg)
+[![Build Status](https://img.shields.io/docker/cloud/build/yixinhu/triwild.svg)](https://hub.docker.com/r/yixinhu/triwild)
 
 ## Important Tips
 
