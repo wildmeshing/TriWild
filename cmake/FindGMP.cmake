@@ -10,17 +10,17 @@ endif (GMP_INCLUDE_DIRS AND GMP_LIBRARIES)
 
 
 
-if(WIN32)
-	if(CYGWIN)
-		triwild_download_gmp_cygwin()
-	elseif(MINGW)
-		triwild_download_gmp_mingw()
-	else()
-		triwild_download_gmp_vc()
-	endif()
+#if(WIN32)
+#	if(CYGWIN)
+#		triwild_download_gmp_cygwin()
+	#elseif(MINGW)
+#		triwild_download_gmp_mingw()
+	#else()
+#		triwild_download_gmp_vc()
+	#endif()
 
-	SET(GMP_WINDOWS_PATH ${THIRD_PARTY_DIR}/gmp)
-endif()
+	#SET(GMP_WINDOWS_PATH ${THIRD_PARTY_DIR}/gmp)
+#endif()
 
 
 find_path(GMP_INCLUDE_DIRS NAMES gmp.h PATHS $ENV{GMP_INC} ${GMP_WINDOWS_PATH})
