@@ -117,7 +117,9 @@ set(SOURCE_FILES
 		src/triwild/FeatureElements.cpp src/triwild/FeatureElements.h
 		src/triwild/feature_preprocessing.cpp src/triwild/feature_preprocessing.h
 		src/triwild/feature.cpp src/triwild/feature.h
-		src/triwild/reference_triangle.cpp src/triwild/reference_triangle.h)
+
+		src/triwild/reference_triangle.cpp src/triwild/reference_triangle.h
+		src/triwild/do_triwild.cpp src/triwild/do_triwild.h)
 
 add_definitions(-D_REF_VS=\"${CMAKE_CURRENT_SOURCE_DIR}/src/triwild/reference_triangle_vertices.txt\")
 add_definitions(-D_REF_FS=\"${CMAKE_CURRENT_SOURCE_DIR}/src/triwild/reference_triangle_faces.txt\")
