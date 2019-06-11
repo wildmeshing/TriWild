@@ -1,4 +1,4 @@
-﻿#include "../extern/CLI11.hpp"
+#include "../extern/CLI11.hpp"
 #include "triwild/meshio.hpp"
 
 #include <igl/Timer.h>

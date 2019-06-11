@@ -68,7 +68,7 @@ option(LIBIGL_WITH_XML               "Use XML"            OFF)
 option(LIBIGL_WITH_PNG               "Use PNG"            OFF)
 option(LIBIGL_WITH_PYTHON            "Use Python"         OFF)
 option(LIBIGL_WITH_TETGEN            "Use Tetgen"         OFF)
-option(LIBIGL_WITH_TRIANGLE          "Use Triangle"       ON)
+option(LIBIGL_WITH_TRIANGLE          "Use Triangle"       OFF)
 
 # gui
 option(LIBIGL_WITH_OPENGL            "Use OpenGL"         OFF)
@@ -116,7 +116,11 @@ set(SOURCE_FILES
 
 		src/triwild/FeatureElements.cpp src/triwild/FeatureElements.h
 		src/triwild/feature_preprocessing.cpp src/triwild/feature_preprocessing.h
-		src/triwild/feature.cpp src/triwild/feature.h)
+		src/triwild/feature.cpp src/triwild/feature.h
+		src/triwild/reference_triangle.cpp src/triwild/reference_triangle.h)
+
+add_definitions(-D_REF_VS=\"${CMAKE_CURRENT_SOURCE_DIR}/src/triwild/reference_triangle_vertices.txt\")
+add_definitions(-D_REF_FS=\"${CMAKE_CURRENT_SOURCE_DIR}/src/triwild/reference_triangle_faces.txt\")
 
 option(NLOPT_PYTHON OFF)
 option(NLOPT_GUILE OFF)
@@ -150,7 +154,7 @@ endif()
 
 
 target_include_directories(triwild_lib PUBLIC ${GMP_INCLUDE_DIRS})
-target_link_libraries(triwild_lib PUBLIC geogram igl::core ${GMP_LIBRARIES} igl::triangle nlopt)
+target_link_libraries(triwild_lib PUBLIC geogram igl::core ${GMP_LIBRARIES} nlopt)
 
 
 

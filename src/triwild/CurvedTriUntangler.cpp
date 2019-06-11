@@ -11,11 +11,12 @@
 #include "Curves.h"
 #include "auto_p_bases.hpp"
 
-#include <igl/triangle/triangulate.h>
+//#include <igl/triangle/triangulate.h>
 #include <Eigen/Dense>
 #include <nlopt.hpp>
 #include <cassert>
 
+#include "reference_triangle.h"
 
 namespace triwild {
 	namespace
@@ -396,7 +397,9 @@ namespace triwild {
 		E << 0, 1,
 		1, 2,
 		2, 0;
-		igl::triangle::triangulate(V, E, _, "Qq10a" + std::to_string(0.0001), V_out, F);
+//		igl::triangle::triangulate(V, E, _, "Qq10a" + std::to_string(0.0001), V_out, F);
+        V_out = get_reference_triangle_vertices();
+        F = get_reference_triangle_faces();
 
 		// std::cout<<V_out.rows()<<std::endl;
 		// std::cout<<V_out<<std::endl;
@@ -489,7 +492,9 @@ namespace triwild {
 		E << 0, 1,
 		1, 2,
 		2, 0;
-		igl::triangle::triangulate(V, E, _, "Qq10a" + std::to_string(0.0001), V_out, F);
+//		igl::triangle::triangulate(V, E, _, "Qq10a" + std::to_string(0.0001), V_out, F);
+        V_out = get_reference_triangle_vertices();
+        F = get_reference_triangle_faces();
 
 		// std::cout<<V_out.rows()<<std::endl;
 		// std::cout<<V_out<<std::endl;
@@ -622,7 +627,9 @@ namespace triwild {
 		E << 0, 1,
 				1, 2,
 				2, 0;
-		igl::triangle::triangulate(V, E, _, "Qq10a" + std::to_string(0.0001), V_out, F);
+//		igl::triangle::triangulate(V, E, _, "Qq10a" + std::to_string(0.0001), V_out, F);
+        V_out = get_reference_triangle_vertices();
+        F = get_reference_triangle_faces();
 
 		// std::cout<<V_out.rows()<<std::endl;
 		// std::cout<<V_out<<std::endl;

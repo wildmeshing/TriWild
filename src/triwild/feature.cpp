@@ -20,6 +20,8 @@
 #include "../../extern/aabbcc/src/AABB.h"
 #include <igl/unique_rows.h>
 
+#include "reference_triangle.h"
+
 namespace triwild {
     namespace feature {
         std::vector<std::shared_ptr<FeatureElement>> features;
@@ -492,7 +494,7 @@ void triwild::feature::merge_inflection(MeshData& mesh) {
     }
 }
 
-#include <igl/triangle/triangulate.h>
+//#include <igl/triangle/triangulate.h>
 #include "auto_p_bases.hpp"
 #include "meshio.hpp"
 void triwild::feature::curving(MeshData& mesh, GEO::MeshFacetsAABB &b_tree) {
@@ -650,7 +652,10 @@ void triwild::feature::check_inversion(MeshData& mesh, bool is_output_objs){
                         1, 2,
                         2, 0;
                 CN << 0, 0, 1;
-                igl::triangle::triangulate(V, E, _, "Qq10a" + std::to_string(0.0001), V_out, F);
+//                igl::triangle::triangulate(V, E, _, "Qq10a" + std::to_string(0.0001), V_out, F);
+                V_out = get_reference_triangle_vertices();
+                F = get_reference_triangle_faces();
+
                 FN = Eigen::MatrixXi::Ones(F.rows(), 3);
 
                 V_waped.resizeLike(V_out);
