@@ -27,6 +27,8 @@ Download [zip](https://drive.google.com/file/d/13xZqYpBz1cV1JaakgkcSO6hSbV9or5V4
 
 Input: [19686 meshes (.obj) each with a curved feature file (.json)](https://drive.google.com/file/d/1yhrJtfCVMahwgPc0pmX0D8GAJgZ9M7v9/view?usp=sharing)
 
+(For your reference, [here](https://drive.google.com/open?id=1RWzbLKqXeWIQeNYaAfzE8BEcqJZ0R6b6) is original 20k SVG images. Those with animation are not converted to obj/json.)
+
 Output with curved constrains: [19685 meshes (.msh)](https://drive.google.com/open?id=189OP5v5EJNP9QMqpWw_XuGRK_MjMThuJ)
 
 Output with linear constrains(todo James): [19686 meshes (.msh)]()
