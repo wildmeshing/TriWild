@@ -11,14 +11,14 @@
 
 #include "do_triwild.h"
 
-void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in, const json& feature_info,
+void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in, json& feature_info,
                          Eigen::MatrixXd &V_out, Eigen::MatrixXi &F_out, Eigen::MatrixXd& nodes, std::vector<std::vector<int>>& F_nodes,
                          double stop_quality, int max_its, int stage,
                          double epsilon, double feature_epsilon,
                          double target_edge_len, double edge_length_r,
                          double flat_feature_angle,
                          bool cut_outside,
-                         const std::string &hole_file,
+                         const std::string hole_file,
                          bool mute_log) {
 
     args.stop_quality = stop_quality;

@@ -9,6 +9,8 @@
 
 using namespace triwild;
 
+//#include "triwild/do_triwild.h"
+
 int main(int argc, char* argv[]) {
     CLI::App app{"Robust Triangulation"};
     app.add_option("--input", args.input, "Input segments in .obj format.")->required();
@@ -79,6 +81,30 @@ int main(int argc, char* argv[]) {
     Eigen::MatrixXd V;
     std::vector<std::array<int, 2>> edges;
     triangulation::load_input(args.input, V, edges);
+
+//    Eigen::MatrixXi E(edges.size(), 2);
+//    for(int i=0;i<edges.size();i++){
+//        for(int j=0;j<2;j++)
+//            E(i, j) = edges[i][j];
+//    }
+//
+//    using json = nlohmann::json;
+//    json feature_info = json({});
+//    if (args.feature_input != "") {
+//        std::ifstream file(args.feature_input);
+//        if (file.is_open())
+//            file >> feature_info;
+//        file.close();
+//    }
+//
+//    Eigen::MatrixXd V_out;
+//    Eigen::MatrixXi F_out;
+//    Eigen::MatrixXd nodes;
+//    std::vector<std::vector<int>> F_nodes;
+//    do_triwild(V, E, feature_info, V_out, F_out, nodes, F_nodes);
+//
+//    return 0;
+
     int input_v_cnt = V.rows();
     int input_e_cnt = edges.size();
     load_mesh_time = igl_timer.getElapsedTime();

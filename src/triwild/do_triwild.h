@@ -23,15 +23,15 @@
 using json = nlohmann::json;
 
 namespace triwild {
-    void do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in, const json& feature_info,
+    void do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in, json& feature_info,
                     Eigen::MatrixXd &V_out, Eigen::MatrixXi &F_out, Eigen::MatrixXd& nodes, std::vector<std::vector<int>>& F_nodes,
-                    double stop_quality, int max_its, int stage,
-                    double epsilon, double feature_epsilon,
-                    double target_edge_len, double edge_length_r,
-                    double flat_feature_angle,
-                    bool cut_outside,
-                    const std::string &hole_file,
-                    bool mute_log);
+                    double stop_quality = args.stop_quality, int max_its = args.max_its, int stage = args.stage,
+                    double epsilon = args.epsilon, double feature_epsilon = args.feature_epsilon,
+                    double target_edge_len = args.target_edge_len, double edge_length_r = args.edge_length_r,
+                    double flat_feature_angle = args.flat_feature_angle,
+                    bool cut_outside = false,
+                    const std::string hole_file = "",
+                    bool mute_log = false);
 }
 
 
