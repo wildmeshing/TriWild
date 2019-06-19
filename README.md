@@ -43,7 +43,7 @@ Install Docker and run Docker. Pull TetWild Docker image and run the binary:
 
 ```bash
 docker pull yixinhu/triwild
-docker run --rm -v "$(pwd)":/data yixinhu/triwild [TriWild arguments]
+docker run --rm -v "$(pwd)":/data yixinhu/triwild /app/TriWild/build/TriWild [TriWild arguments]
 ```
 
 ### via CMake

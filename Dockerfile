@@ -14,7 +14,7 @@ RUN cmake .. && make
 
 WORKDIR /data
 
-ENTRYPOINT ["/app/TriWild/build/TriWild"]
+#ENTRYPOINT ["/app/TriWild/build/TriWild"]
 
 ## Create TriWild image with:
 # docker build -t triwild .
