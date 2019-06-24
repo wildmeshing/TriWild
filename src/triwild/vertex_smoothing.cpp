@@ -344,7 +344,7 @@ bool triwild::optimization::smooth_a_vertex(MeshData& mesh, const int v_id, Poin
         }
 
         if (feature_id >= 0) {
-            if (!found_step || std::isnan(t_next) || std::isinf(t_next) || t>=1 || t<=0)
+            if (!found_step || std::isnan(t_next) || std::isinf(t_next) || t_next > 1 || t_next < 0)
                 break;
             t = t_next;
         } else {
