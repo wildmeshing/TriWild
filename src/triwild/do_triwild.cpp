@@ -72,8 +72,8 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
         for (size_t i = 0; i < mesh.nodes.size(); i++) {
             if (mesh.n_is_removed[i])
                 continue;
-            V_out(cnt, 0) = mesh.nodes[i][0];
-            V_out(cnt, 1) = mesh.nodes[i][1];
+            nodes(cnt, 0) = mesh.nodes[i][0];
+            nodes(cnt, 1) = mesh.nodes[i][1];
             cnt++;
         }
         cnt = std::count(mesh.t_is_removed.begin(), mesh.t_is_removed.end(), false);

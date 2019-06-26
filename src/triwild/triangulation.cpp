@@ -124,7 +124,7 @@ void triwild::triangulation::preprocessing(Eigen::MatrixXd& V, std::vector<std::
         edges[i][0] = VI(edges[i][0]);
         edges[i][1] = VI(edges[i][1]);
         if (e[0] == e[1]) {
-            edges.erase(edges.begin() + 1);
+            edges.erase(edges.begin() + i);
             i--;
         } else if (e[0] > e[1])
             std::swap(e[0], e[1]);
