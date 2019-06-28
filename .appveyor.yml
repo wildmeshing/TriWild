@@ -31,3 +31,6 @@ build_script:
 test_script:
   - cd c:\projects\triwild
   - git clone https://github.com/wildmeshing/data.git
+  - cp C:\Miniconda3-x64\Library\bin\mpir.dll .\buid\%config%\
+  - .\buid\%config%\TriWild.exe --input .\data\rocket.obj
+  - .\buid\%config%\TriWild.exe --input .\data\rocket.obj --feature-input .\data\rocket.json

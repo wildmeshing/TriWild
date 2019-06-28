@@ -51,6 +51,7 @@ script:
 - cmake -DCMAKE_BUILD_TYPE=$CONFIG ..
 - make -j2
 - ls ../
+- ./TriWild --input ../data/rocket.obj
 - ./TriWild --input ../data/rocket.obj --feature-input ../data/rocket.json
 - ccache --show-stats
 - cd ..
