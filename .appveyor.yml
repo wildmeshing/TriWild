@@ -12,10 +12,10 @@ environment:
   - config: Debug
 build:
   parallel: true
-init:
- - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-on_finish:
- - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# init:
+#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# on_finish:
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 build_script:
   - C:\Miniconda3-x64\Scripts\conda.exe install -c conda-forge mpir -y
   - SET GMP_INC=C:\Miniconda3-x64\Library\include
@@ -31,6 +31,6 @@ build_script:
 test_script:
   - cd c:\projects\triwild
   - git clone https://github.com/wildmeshing/data.git
-  - cp C:\Miniconda3-x64\Library\bin\mpir.dll .\buid\%config%\mpir.dll
-  - .\buid\%config%\TriWild.exe --input .\data\rocket.obj
-  - .\buid\%config%\TriWild.exe --input .\data\rocket.obj --feature-input .\data\rocket.json
+  - cp C:\Miniconda3-x64\Library\bin\mpir.dll .\build\%config%
+  - .\build\%config%\TriWild.exe --input .\data\rocket.obj
+  - .\build\%config%\TriWild.exe --input .\data\rocket.obj --feature-input .\data\rocket.json
