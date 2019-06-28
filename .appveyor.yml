@@ -12,10 +12,10 @@ environment:
   - config: Debug
 build:
   parallel: true
-#init:
-#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-#on_finish:
-#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+init:
+ - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+on_finish:
+ - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 build_script:
   - C:\Miniconda3-x64\Scripts\conda.exe install -c conda-forge mpir -y
   - SET GMP_INC=C:\Miniconda3-x64\Library\include
@@ -28,5 +28,6 @@ build_script:
   - set MSBuildOptions=/v:m /p:Configuration=%config% /logger:%MSBuildLogger%
   - msbuild %MSBuildOptions% TriWild.sln
 
-# test_script:
-#   - ctest -C %config% --verbose --output-on-failure -j 2
+test_script:
+  - cd c:\projects\triwild
+  - git clone https://github.com/wildmeshing/data.git
