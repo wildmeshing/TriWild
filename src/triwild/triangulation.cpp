@@ -379,7 +379,7 @@ void triwild::triangulation::simplify_input(Eigen::MatrixXd& V, std::vector<std:
         double l = (V.row(v_ids[0]) - V.row(v_ids[1])).squaredNorm();
         if (l != old_l)
             continue;
-        if (v_ids == queue_s.top().v_ids)
+        if (!queue_s.empty() && v_ids == queue_s.top().v_ids)
             continue;
 
         ////collapse an edge
