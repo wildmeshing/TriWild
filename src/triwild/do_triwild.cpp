@@ -11,15 +11,16 @@
 
 #include "do_triwild.h"
 
-void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in, json& feature_info,
-                         Eigen::MatrixXd &V_out, Eigen::MatrixXi &F_out, Eigen::MatrixXd& nodes, std::vector<std::vector<int>>& F_nodes,
+void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in, json &feature_info,
+                         Eigen::MatrixXd &V_out, Eigen::MatrixXi &F_out, Eigen::MatrixXd &nodes, std::vector<std::vector<int>> &F_nodes,
                          double stop_quality, int max_its, int stage,
                          double epsilon, double feature_epsilon,
                          double target_edge_len, double edge_length_r,
                          double flat_feature_angle,
                          bool cut_outside,
                          const std::string hole_file,
-                         bool mute_log) {
+                         bool mute_log)
+{
 
     args.stop_quality = stop_quality;
     args.max_its = max_its;
@@ -31,17 +32,19 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     args.flat_feature_angle = flat_feature_angle;
     args.mute_log = mute_log;
 
-    auto get_outputs = [&](const MeshData& mesh) {
+    auto get_outputs = [&](const MeshData &mesh) {
         std::unordered_map<int, int> map_v_ids;
         int cnt = 0;
-        for (size_t i = 0; i < mesh.tri_vertices.size(); i++) {
+        for (size_t i = 0; i < mesh.tri_vertices.size(); i++)
+        {
             if (mesh.v_is_removed[i])
                 continue;
             map_v_ids[i] = cnt++;
         }
         V_out.resize(cnt, 2);
         cnt = 0;
-        for (size_t i = 0; i < mesh.tri_vertices.size(); i++) {
+        for (size_t i = 0; i < mesh.tri_vertices.size(); i++)
+        {
             if (mesh.v_is_removed[i])
                 continue;
             V_out(cnt, 0) = mesh.tri_vertices[i].posf[0];
@@ -51,7 +54,8 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
         cnt = std::count(mesh.t_is_removed.begin(), mesh.t_is_removed.end(), false);
         F_out.resize(cnt, 3);
         cnt = 0;
-        for (size_t i = 0; i < mesh.tris.size(); i++) {
+        for (size_t i = 0; i < mesh.tris.size(); i++)
+        {
             if (mesh.t_is_removed[i])
                 continue;
             for (int j = 0; j < 3; j++)
@@ -59,17 +63,18 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
             cnt++;
         }
 
-
         map_v_ids.clear();
         cnt = 0;
-        for (size_t i = 0; i < mesh.nodes.size(); i++) {
+        for (size_t i = 0; i < mesh.nodes.size(); i++)
+        {
             if (mesh.n_is_removed[i])
                 continue;
             map_v_ids[i] = cnt++;
         }
         nodes.resize(cnt, 2);
         cnt = 0;
-        for (size_t i = 0; i < mesh.nodes.size(); i++) {
+        for (size_t i = 0; i < mesh.nodes.size(); i++)
+        {
             if (mesh.n_is_removed[i])
                 continue;
             nodes(cnt, 0) = mesh.nodes[i][0];
@@ -80,7 +85,8 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
         F_nodes.clear();
         F_nodes.resize(cnt);
         cnt = 0;
-        for (size_t i = 0; i < mesh.tri_nodes.size(); i++) {
+        for (size_t i = 0; i < mesh.tri_nodes.size(); i++)
+        {
             if (mesh.t_is_removed[i])
                 continue;
             for (int j = 0; j < mesh.tri_nodes[i].size(); j++)
@@ -99,10 +105,13 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     double curving_time = 0;
     double cut_and_hole_time = 0;
 
-    if (args.mute_log) {
+#ifndef WIN32
+    if (args.mute_log)
+    {
         std::streambuf *orig_buf = cout.rdbuf();
         cout.rdbuf(NULL);
     }
+#endif
 
     igl::Timer igl_timer;
     double t;
@@ -112,34 +121,35 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
 
     Eigen::MatrixXd V = V_in;
     std::vector<std::array<int, 2>> edges(E_in.rows());
-    for(int i=0;i<E_in.rows();i++) {
+    for (int i = 0; i < E_in.rows(); i++)
+    {
         for (int j = 0; j < 2; j++)
             edges[i][j] = E_in(i, j);
     }
 
-//    Eigen::MatrixXd V;
-//    std::vector<std::array<int, 2>> edges;
-//    triangulation::load_input(args.input, V, edges);
+    //    Eigen::MatrixXd V;
+    //    std::vector<std::array<int, 2>> edges;
+    //    triangulation::load_input(args.input, V, edges);
     int input_v_cnt = V.rows();
     int input_e_cnt = edges.size();
     load_mesh_time = igl_timer.getElapsedTime();
     igl_timer.start();
 
-//    if (feature::init(args.feature_input))
-//        args.is_preserving_feature = true;
-    if(feature::init(feature_info))
+    //    if (feature::init(args.feature_input))
+    //        args.is_preserving_feature = true;
+    if (feature::init(feature_info))
         args.is_preserving_feature = true;
 
     if (args.stop_quality < 0)
         args.stop_quality = args.is_preserving_feature ? 20 : 10;
     if (args.epsilon < 0)
-//        args.epsilon = args.is_preserving_feature ? 5e-3 : 1e-3;
+        //        args.epsilon = args.is_preserving_feature ? 5e-3 : 1e-3;
         args.epsilon = args.is_preserving_feature ? 2e-3 : 1e-3;
 
     double line_width = 0.3 * args.diagonal_len;
     double f_line_width = 0.5 * args.diagonal_len;
     double s_f_line_width = 0.4 * args.diagonal_len;
-//        double draw_points = true;
+    //        double draw_points = true;
     double draw_points = false;
 
     double point_size = 0.0005 * args.diagonal_len;
@@ -160,7 +170,8 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     t = igl_timer.getElapsedTime();
     preprocess_time = t;
     cout << "Loaded and preprocessed." << endl;
-    cout << "time = " << t << "s" << endl << endl;
+    cout << "time = " << t << "s" << endl
+         << endl;
 
     ///////////////////
     cout << "BSP subdivision..." << endl;
@@ -171,7 +182,8 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     t = igl_timer.getElapsedTime();
     bsp_time = t;
     cout << "BSP subdivision done." << endl;
-    cout << "time = " << t << "s" << endl << endl;
+    cout << "time = " << t << "s" << endl
+         << endl;
 
     ///////////////////
     cout << "Mesh optimization..." << endl;
@@ -184,17 +196,18 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     cout << "Mesh optimization done." << endl;
     cout << "time = " << t << "s" << endl;
 
-//    if (!skip_eps) {
-//         export_eps(mesh,
-//             line_width, line_col, point_size, point_col,
-//             f_line_width, f_line_col, f_point_size, f_point_col,
-//             s_f_line_width, s_f_line_col, s_f_point_size, s_f_point_col,
-//             draw_points, args.output + "_lin.eps");
-//     }
+    //    if (!skip_eps) {
+    //         export_eps(mesh,
+    //             line_width, line_col, point_size, point_col,
+    //             f_line_width, f_line_col, f_point_size, f_point_col,
+    //             s_f_line_width, s_f_line_col, s_f_point_size, s_f_point_col,
+    //             draw_points, args.output + "_lin.eps");
+    //     }
 
     ///////////////////
-    if (!args.is_preserving_feature) {
-//        optimization::output_mesh(mesh);//todo
+    if (!args.is_preserving_feature)
+    {
+        //        optimization::output_mesh(mesh);//todo
         get_outputs(mesh);
         return;
     }
@@ -214,6 +227,6 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
         optimization::erase_holes(mesh, hole_file);
     cut_and_hole_time = igl_timer.getElapsedTime();
 
-//    optimization::output_mesh(mesh);//todo
+    //    optimization::output_mesh(mesh);//todo
     get_outputs(mesh);
 }
