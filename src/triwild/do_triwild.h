@@ -30,7 +30,7 @@ namespace triwild {
                     double target_edge_len = args.target_edge_len, double edge_length_r = args.edge_length_r,
                     double flat_feature_angle = args.flat_feature_angle,
                     bool cut_outside = false,
-                    const std::string hole_file = "",
+                    const Eigen::MatrixXd hole_pts = Eigen::MatrixXd(),
                     bool mute_log = false);
 }
 

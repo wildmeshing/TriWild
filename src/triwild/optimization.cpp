@@ -588,6 +588,23 @@ void triwild::optimization::erase_holes(MeshData& mesh, const std::string& hole_
     } else
         return;
 
+    erase_holes(mesh, ps);
+}
+
+void triwild::optimization::erase_holes(MeshData& mesh, const Eigen::MatrixXd& hole_pts) {
+    if (hole_pts.size() <= 0)
+        return;
+
+    assert(hole_pts.cols() == 2);
+    std::vector<GEO::vec3> ps; ps.reserve(hole_pts.rows());
+    for(int i = 0; i < hole_pts.rows(); ++i)
+        ps.emplace_back(hole_pts(i, 0), hole_pts(i, 1), 0);
+
+    erase_holes(mesh, ps);
+}
+
+void triwild::optimization::erase_holes(MeshData &mesh, const std::vector<GEO::vec3> &ps)
+{
     //construct aabb tree
     GEO::Mesh f_mesh;
     f_mesh.vertices.clear();

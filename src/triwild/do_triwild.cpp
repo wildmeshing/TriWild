@@ -18,7 +18,7 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
                          double target_edge_len, double edge_length_r,
                          double flat_feature_angle,
                          bool cut_outside,
-                         const std::string hole_file,
+                         const Eigen::MatrixXd hole_pts,
                          bool mute_log)
 {
 
@@ -223,8 +223,8 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     igl_timer.start();
     if (cut_outside)
         optimization::erase_outside(mesh);
-    if (hole_file != "")
-        optimization::erase_holes(mesh, hole_file);
+    if (hole_pts.size() > 0)
+        optimization::erase_holes(mesh, hole_pts);
     cut_and_hole_time = igl_timer.getElapsedTime();
 
     //    optimization::output_mesh(mesh);//todo

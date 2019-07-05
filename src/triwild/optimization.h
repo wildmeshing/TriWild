@@ -27,6 +27,8 @@ namespace triwild {
 
         void erase_outside(MeshData& mesh);
         void erase_holes(MeshData& mesh, const std::string& hole_file);
+        void erase_holes(MeshData& mesh, const Eigen::MatrixXd& hole_pts);
+        void erase_holes(MeshData &mesh, const std::vector<GEO::vec3> &ps);
 
         bool round_a_vertex(MeshData& mesh, int v_id);
 
@@ -68,7 +70,7 @@ namespace triwild {
         void output_info(MeshData& mesh);
         void output_boundary(MeshData& mesh, bool is_feature = false);
         template<typename T>
-        std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec);        
+        std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec);
         template<typename T>
         void vector_unique(std::vector<T>& v){
             std::sort(v.begin(), v.end());
