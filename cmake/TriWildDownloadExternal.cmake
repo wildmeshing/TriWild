@@ -27,7 +27,7 @@ endfunction()
 function(triwild_download_aabbcc)
     triwild_download_project(aabbcc
         GIT_REPOSITORY https://github.com/Yixin-Hu/aabbcc
-        GIT_TAG        f6b406427400ed7ddb56cfc2577b6af571827c8c
+        GIT_TAG        7be592fba329ccfc806d8bf26675538ae5262947
     )
 endfunction()
 
@@ -45,7 +45,7 @@ endfunction()
 function(triwild_download_igl)
     triwild_download_project(libigl
         GIT_REPOSITORY https://github.com/libigl/libigl
-        GIT_TAG        608fc010a5d65f2edede2e7b64cf09e248d76e15
+        GIT_TAG        f6b406427400ed7ddb56cfc2577b6af571827c8c
     )
 endfunction()
 
