@@ -57,6 +57,11 @@ namespace triwild {
         void output_input_features(const std::vector<std::shared_ptr<FeatureElement>>& features,
                 Eigen::MatrixXd& V, std::vector<std::array<int, 2>>& edges, const std::string& postfix);
         void output_stats(MeshData& mesh, std::ofstream& f);
+
+        inline void reset(){
+            features.clear();
+            secondary_features.clear();
+        }
     }
 }
 
