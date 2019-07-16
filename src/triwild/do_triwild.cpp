@@ -207,6 +207,10 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     ///////////////////
     if (!args.is_preserving_feature)
     {
+        if (cut_outside)
+            optimization::erase_outside(mesh);
+        if (hole_pts.size() > 0)
+            optimization::erase_holes(mesh, hole_pts);
         //        optimization::output_mesh(mesh);//todo
         get_outputs(mesh);
         return;
