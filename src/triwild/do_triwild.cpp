@@ -19,8 +19,9 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
                          double flat_feature_angle,
                          bool cut_outside,
                          const Eigen::MatrixXd hole_pts,
-                         bool mute_log)
-{
+                         bool mute_log) {
+    args.reset();
+    feature::reset();
 
     args.stop_quality = stop_quality;
     args.max_its = max_its;
@@ -35,16 +36,14 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     auto get_outputs = [&](const MeshData &mesh) {
         std::unordered_map<int, int> map_v_ids;
         int cnt = 0;
-        for (size_t i = 0; i < mesh.tri_vertices.size(); i++)
-        {
+        for (size_t i = 0; i < mesh.tri_vertices.size(); i++) {
             if (mesh.v_is_removed[i])
                 continue;
             map_v_ids[i] = cnt++;
         }
         V_out.resize(cnt, 2);
         cnt = 0;
-        for (size_t i = 0; i < mesh.tri_vertices.size(); i++)
-        {
+        for (size_t i = 0; i < mesh.tri_vertices.size(); i++) {
             if (mesh.v_is_removed[i])
                 continue;
             V_out(cnt, 0) = mesh.tri_vertices[i].posf[0];
@@ -54,8 +53,7 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
         cnt = std::count(mesh.t_is_removed.begin(), mesh.t_is_removed.end(), false);
         F_out.resize(cnt, 3);
         cnt = 0;
-        for (size_t i = 0; i < mesh.tris.size(); i++)
-        {
+        for (size_t i = 0; i < mesh.tris.size(); i++) {
             if (mesh.t_is_removed[i])
                 continue;
             for (int j = 0; j < 3; j++)
@@ -65,16 +63,14 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
 
         map_v_ids.clear();
         cnt = 0;
-        for (size_t i = 0; i < mesh.nodes.size(); i++)
-        {
+        for (size_t i = 0; i < mesh.nodes.size(); i++) {
             if (mesh.n_is_removed[i])
                 continue;
             map_v_ids[i] = cnt++;
         }
         nodes.resize(cnt, 2);
         cnt = 0;
-        for (size_t i = 0; i < mesh.nodes.size(); i++)
-        {
+        for (size_t i = 0; i < mesh.nodes.size(); i++) {
             if (mesh.n_is_removed[i])
                 continue;
             nodes(cnt, 0) = mesh.nodes[i][0];
@@ -85,8 +81,7 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
         F_nodes.clear();
         F_nodes.resize(cnt);
         cnt = 0;
-        for (size_t i = 0; i < mesh.tri_nodes.size(); i++)
-        {
+        for (size_t i = 0; i < mesh.tri_nodes.size(); i++) {
             if (mesh.t_is_removed[i])
                 continue;
             for (int j = 0; j < mesh.tri_nodes[i].size(); j++)
@@ -106,8 +101,7 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     double cut_and_hole_time = 0;
 
 #ifndef WIN32
-    if (args.mute_log)
-    {
+    if (args.mute_log) {
         std::streambuf *orig_buf = cout.rdbuf();
         cout.rdbuf(NULL);
     }
@@ -121,8 +115,7 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
 
     Eigen::MatrixXd V = V_in;
     std::vector<std::array<int, 2>> edges(E_in.rows());
-    for (int i = 0; i < E_in.rows(); i++)
-    {
+    for (int i = 0; i < E_in.rows(); i++) {
         for (int j = 0; j < 2; j++)
             edges[i][j] = E_in(i, j);
     }

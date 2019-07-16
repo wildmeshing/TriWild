@@ -64,6 +64,36 @@ namespace triwild {
 
         bool enable_debug_mesh = false;
         bool output_linear = false;
+
+        inline void reset(){
+            epsilon = -1;
+            feature_epsilon = 1e-3;
+            target_edge_len = -1;
+            input = "";
+            output = "";
+            feature_input = "";
+            postfix = "";
+            log_file = "";
+            stage = 1;
+
+            stop_quality = -1;
+            max_its = 80;
+            i_dd = -1;
+            edge_length_r = 1/20.0;
+            mute_log = false;
+            flat_feature_angle = 10;
+
+            //variables
+            first_triangulation = "delaunay";
+            diagonal_len = -1;
+            v_bad_const = 0.5;
+            v_good_const = 1.5;
+            t_energy_threshold = 10;
+            is_preserving_feature = false;
+
+            enable_debug_mesh = false;
+            output_linear = false;
+        }
     };
 
     extern Arguments args;
