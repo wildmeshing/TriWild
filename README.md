@@ -17,6 +17,9 @@ ACM Transactions on Graphics (SIGGRAPH 2019).
 💡💡💡 Check our **[license](https://github.com/wildmeshing/TriWild#license)** first.
 
 ## Dataset
+
+💡💡💡 **Please kindly cite our paper when using our pre-generated data.**
+
 ### Examples in the Paper
 
 Download [zip](https://drive.google.com/file/d/13xZqYpBz1cV1JaakgkcSO6hSbV9or5V4/view?usp=sharing).
