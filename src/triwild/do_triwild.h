@@ -23,6 +23,8 @@
 using json = nlohmann::json;
 
 namespace triwild {
+    extern bool do_triwild_keep_holes;
+
     void do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in, json& feature_info,
                     Eigen::MatrixXd &V_out, Eigen::MatrixXi &F_out, Eigen::MatrixXd& nodes, std::vector<std::vector<int>>& F_nodes,
                     double stop_quality = args.stop_quality, int max_its = args.max_its, int stage = args.stage,

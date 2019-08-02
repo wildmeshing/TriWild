@@ -26,9 +26,9 @@ namespace triwild {
         void output_mesh(MeshData& mesh);
 
         void erase_outside(MeshData& mesh);
-        void erase_holes(MeshData& mesh, const std::string& hole_file);
-        void erase_holes(MeshData& mesh, const Eigen::MatrixXd& hole_pts);
-        void erase_holes(MeshData &mesh, const std::vector<GEO::vec3> &ps);
+        void erase_holes(MeshData& mesh, const std::string& hole_file, bool is_erase = true);
+        void erase_holes(MeshData& mesh, const Eigen::MatrixXd& hole_pts, bool is_erase = true);
+        void erase_holes(MeshData &mesh, const std::vector<GEO::vec3> &ps, bool is_erase = true);
 
         bool round_a_vertex(MeshData& mesh, int v_id);
 

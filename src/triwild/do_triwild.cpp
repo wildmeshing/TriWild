@@ -11,6 +11,8 @@
 
 #include "do_triwild.h"
 
+bool triwild::do_triwild_keep_holes = false;
+
 void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_in, json &feature_info,
                          Eigen::MatrixXd &V_out, Eigen::MatrixXi &F_out, Eigen::MatrixXd &nodes, std::vector<std::vector<int>> &F_nodes,
                          double stop_quality, int max_its, int stage,
@@ -198,12 +200,15 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     //     }
 
     ///////////////////
-    if (!args.is_preserving_feature)
-    {
+    if (!args.is_preserving_feature) {
         if (cut_outside)
             optimization::erase_outside(mesh);
-        if (hole_pts.size() > 0)
-            optimization::erase_holes(mesh, hole_pts);
+        if (hole_pts.size() > 0) {
+            if (!do_triwild_keep_holes)
+                optimization::erase_holes(mesh, hole_pts);
+            else
+                optimization::erase_holes(mesh, hole_pts, false);
+        }
         //        optimization::output_mesh(mesh);//todo
         get_outputs(mesh);
         return;

@@ -575,7 +575,7 @@ void triwild::optimization::erase_outside(MeshData& mesh) {
     }
 }
 
-void triwild::optimization::erase_holes(MeshData& mesh, const std::string& hole_file) {
+void triwild::optimization::erase_holes(MeshData& mesh, const std::string& hole_file, bool is_erase) {
     //get hole points
     std::vector<GEO::vec3> ps;
     std::ifstream f(hole_file);
@@ -588,10 +588,10 @@ void triwild::optimization::erase_holes(MeshData& mesh, const std::string& hole_
     } else
         return;
 
-    erase_holes(mesh, ps);
+    erase_holes(mesh, ps, is_erase);
 }
 
-void triwild::optimization::erase_holes(MeshData& mesh, const Eigen::MatrixXd& hole_pts) {
+void triwild::optimization::erase_holes(MeshData& mesh, const Eigen::MatrixXd& hole_pts, bool is_erase) {
     if (hole_pts.size() <= 0)
         return;
 
@@ -600,11 +600,10 @@ void triwild::optimization::erase_holes(MeshData& mesh, const Eigen::MatrixXd& h
     for(int i = 0; i < hole_pts.rows(); ++i)
         ps.emplace_back(hole_pts(i, 0), hole_pts(i, 1), 0);
 
-    erase_holes(mesh, ps);
+    erase_holes(mesh, ps, is_erase);
 }
 
-void triwild::optimization::erase_holes(MeshData &mesh, const std::vector<GEO::vec3> &ps)
-{
+void triwild::optimization::erase_holes(MeshData &mesh, const std::vector<GEO::vec3> &ps, bool is_erase){
     //construct aabb tree
     GEO::Mesh f_mesh;
     f_mesh.vertices.clear();
@@ -641,46 +640,99 @@ void triwild::optimization::erase_holes(MeshData &mesh, const std::vector<GEO::v
     GEO::MeshFacetsAABB f_tree(f_mesh, false);
 
     //remove
-    GEO::vec3 _p;
-    double _d;
-    std::queue<int> t_queue;
-    for (auto &p:ps) {
-        int t_id = inv_map_f_ids[f_tree.nearest_facet(p, _p, _d)];
-        mesh.t_is_removed[t_id] = true;
-        t_queue.push(t_id);
-    }
+    if(is_erase) {
+        GEO::vec3 _p;
+        double _d;
+        std::queue<int> t_queue;
+        for (auto &p:ps) {
+            int t_id = inv_map_f_ids[f_tree.nearest_facet(p, _p, _d)];
+            mesh.t_is_removed[t_id] = true;
+            t_queue.push(t_id);
+        }
 
-    while (!t_queue.empty()) {
-        int t_id = t_queue.front();
-        t_queue.pop();
+        while (!t_queue.empty()) {
+            int t_id = t_queue.front();
+            t_queue.pop();
 
 //        mesh.t_is_removed[t_id] = true;
-        for (int j = 0; j < 3; j++) {
-            mesh.tri_vertices[mesh.tris[t_id][j]].conn_tris.erase(t_id);
-        }
-        if (mesh.is_curved) {
-            for (int n_id:mesh.tri_nodes[t_id])
-                mesh.n_is_removed[n_id] = true;
-            mesh.tri_nodes[t_id].clear();
-        }
+            for (int j = 0; j < 3; j++) {
+                mesh.tri_vertices[mesh.tris[t_id][j]].conn_tris.erase(t_id);
+            }
+            if (mesh.is_curved) {
+                for (int n_id:mesh.tri_nodes[t_id])
+                    mesh.n_is_removed[n_id] = true;
+                mesh.tri_nodes[t_id].clear();
+            }
 
-        for (int j = 0; j < 3; j++) {
-            if (mesh.is_bbox_es[t_id][j] || mesh.is_boundary_es[t_id][j])
-                continue;
-            int v1_id = mesh.tris[t_id][(j + 1) % 3];
-            int v2_id = mesh.tris[t_id][(j + 2) % 3];
-            std::vector<int> tmp = set_intersection(mesh.tri_vertices[v1_id].conn_tris,
-                                                    mesh.tri_vertices[v2_id].conn_tris);
-            if (tmp.empty())
-                continue;
-            int n_t_id = set_intersection(mesh.tri_vertices[v1_id].conn_tris,
-                                          mesh.tri_vertices[v2_id].conn_tris)[0];
-            if(mesh.t_is_removed[n_t_id])
-                continue;
-            mesh.t_is_removed[n_t_id] = true;
-            t_queue.push(n_t_id);
+            for (int j = 0; j < 3; j++) {
+                if (mesh.is_bbox_es[t_id][j] || mesh.is_boundary_es[t_id][j])
+                    continue;
+                int v1_id = mesh.tris[t_id][(j + 1) % 3];
+                int v2_id = mesh.tris[t_id][(j + 2) % 3];
+                std::vector<int> tmp = set_intersection(mesh.tri_vertices[v1_id].conn_tris,
+                                                        mesh.tri_vertices[v2_id].conn_tris);
+                if (tmp.empty())
+                    continue;
+                int n_t_id = set_intersection(mesh.tri_vertices[v1_id].conn_tris,
+                                              mesh.tri_vertices[v2_id].conn_tris)[0];
+                if (mesh.t_is_removed[n_t_id])
+                    continue;
+                mesh.t_is_removed[n_t_id] = true;
+                t_queue.push(n_t_id);
+            }
         }
     }
+    else {
+        std::vector<bool> is_kept(mesh.tris.size(), false);
+
+        GEO::vec3 _p;
+        double _d;
+        std::queue<int> t_queue;
+        for (auto &p:ps) {
+            int t_id = inv_map_f_ids[f_tree.nearest_facet(p, _p, _d)];
+            t_queue.push(t_id);
+            is_kept[t_id] = true;
+        }
+
+        while (!t_queue.empty()) {
+            int t_id = t_queue.front();
+            t_queue.pop();
+
+            for (int j = 0; j < 3; j++) {
+                if (mesh.is_bbox_es[t_id][j] || mesh.is_boundary_es[t_id][j])
+                    continue;
+                int v1_id = mesh.tris[t_id][(j + 1) % 3];
+                int v2_id = mesh.tris[t_id][(j + 2) % 3];
+                std::vector<int> tmp = set_intersection(mesh.tri_vertices[v1_id].conn_tris,
+                                                        mesh.tri_vertices[v2_id].conn_tris);
+                if (tmp.size() < 2)
+                    continue;
+
+                int n_t_id = tmp[0] == t_id ? tmp[1] : tmp[0];
+                if(is_kept[n_t_id])
+                    continue;
+                is_kept[n_t_id] = true;
+                t_queue.push(n_t_id);
+            }
+        }
+
+        for (int i = 0; i < mesh.tris.size(); i++) {
+            if (mesh.t_is_removed[i])
+                continue;
+            if (!is_kept[i]) {
+                mesh.t_is_removed[i] = true;
+                for (int j = 0; j < 3; j++) {
+                    mesh.tri_vertices[mesh.tris[i][j]].conn_tris.erase(i);
+                }
+                if (mesh.is_curved) {
+                    for (int n_id:mesh.tri_nodes[i])
+                        mesh.n_is_removed[n_id] = true;
+                    mesh.tri_nodes[i].clear();
+                }
+            }
+        }
+    }
+
     for (int i = 0; i < mesh.tri_vertices.size(); i++) {
         if (mesh.v_is_removed[i])
             continue;
