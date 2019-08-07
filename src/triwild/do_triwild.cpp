@@ -103,10 +103,9 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     double cut_and_hole_time = 0;
 
 #ifndef WIN32
-    if (args.mute_log) {
-        std::streambuf *orig_buf = cout.rdbuf();
+    std::streambuf *orig_buf = cout.rdbuf();
+    if (args.mute_log)
         cout.rdbuf(NULL);
-    }
 #endif
 
     igl::Timer igl_timer;
@@ -231,4 +230,10 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
 
     //    optimization::output_mesh(mesh);//todo
     get_outputs(mesh);
+
+#ifndef WIN32
+    if (args.mute_log)
+        std::cout.rdbuf(orig_buf);
+#endif
+
 }
