@@ -205,7 +205,8 @@ void triwild::optimization::init(const Eigen::MatrixXd& V, const std::vector<std
 //        mesh.min_scalar = (args.diagonal_len * 1e-4) / mesh.ideal_edge_length;
 //        mesh.min_scalar = 1e-4;//give an absolute value
     }
-    mesh.min_scalar = args.min_edge_length / mesh.ideal_edge_length;
+//    mesh.min_scalar = args.min_edge_length / mesh.ideal_edge_length;
+    mesh.min_scalar = args.min_edge_length;
 
     ////rounding
     for (int i = 0; i < mesh.tri_vertices.size(); i++)
