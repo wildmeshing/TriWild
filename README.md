@@ -14,6 +14,29 @@ ACM Transactions on Graphics (SIGGRAPH 2019).
 
 💡💡💡 If you are interested in the algorithm details, please refer to our **[paper](https://cs.nyu.edu/~yixinhu/triwild.pdf)** first. We provide plenty of examples and statistics in the paper.
 
+```
+@article{Hu:2019:TRT:3306346.3323011,
+ author = {Hu, Yixin and Schneider, Teseo and Gao, Xifeng and Zhou, Qingnan and Jacobson, Alec and Zorin, Denis and Panozzo, Daniele},
+ title = {TriWild: Robust Triangulation with Curve Constraints},
+ journal = {ACM Trans. Graph.},
+ issue_date = {July 2019},
+ volume = {38},
+ number = {4},
+ month = jul,
+ year = {2019},
+ issn = {0730-0301},
+ pages = {52:1--52:15},
+ articleno = {52},
+ numpages = {15},
+ url = {http://doi.acm.org/10.1145/3306346.3323011},
+ doi = {10.1145/3306346.3323011},
+ acmid = {3323011},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {curved triangulation, mesh generation, robust geometry processing},
+} 
+```
+
 💡💡💡 Check our **[license](https://github.com/wildmeshing/TriWild#license)** first.
 
 ## Dataset
