@@ -8,7 +8,7 @@ endif()
 
 ################################################################################
 
-set(GEOGRAM_SEARCH_PATHS ${FLOAT_TETWILD_EXTERNAL}/geogram)
+set(GEOGRAM_SEARCH_PATHS ${THIRD_PARTY_DIR}/geogram)
 
 find_path(GEOGRAM_SOURCE_INCLUDE_DIR
 		geogram/basic/common.h
