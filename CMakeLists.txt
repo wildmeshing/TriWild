@@ -156,6 +156,7 @@ endif()
 
 
 target_include_directories(triwild_lib PUBLIC ${GMP_INCLUDE_DIRS})
+target_include_directories(triwild_lib PUBLIC "src")
 target_link_libraries(triwild_lib PUBLIC geogram igl::core ${GMP_LIBRARIES} nlopt)
 
 
