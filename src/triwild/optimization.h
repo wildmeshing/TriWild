@@ -20,8 +20,8 @@ namespace triwild {
         void init(const Eigen::MatrixXd& V, const std::vector<std::array<int, 2>>& edges,
                 const std::vector<std::vector<int>>& tag_boundary_es,
                 MeshData& mesh, GEO::MeshFacetsAABB &b_tree);
-        void refine(MeshData& mesh, GEO::MeshFacetsAABB &b_tree, const std::array<int, 4>& ops= {1,1,1,1});
-        void operation(MeshData& mesh, GEO::MeshFacetsAABB &b_tree, const std::array<int, 4>& ops= {1,1,1,1});
+        void refine(MeshData& mesh, GEO::MeshFacetsAABB &b_tree, const std::array<int, 4>& ops= {{1,1,1,1}});
+        void operation(MeshData& mesh, GEO::MeshFacetsAABB &b_tree, const std::array<int, 4>& ops= {{1,1,1,1}});
         bool update_scaling_field(MeshData& mesh, double max_energy);
         void output_mesh(MeshData& mesh);
 
