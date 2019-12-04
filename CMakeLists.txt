@@ -77,7 +77,7 @@ option(LIBIGL_WITH_OPENGL_GLFW_IMGUI "Use ImGui"          OFF)
 option(LIBIGL_WITH_VIEWER            "Use OpenGL viewer"  OFF)
 
 find_package(LIBIGL REQUIRED QUIET)
-find_package(GMP)
+find_package(GMPTriWild)
 
 IF(NOT ${GMP_FOUND})
         MESSAGE(FATAL_ERROR "Cannot find GMP")
@@ -155,6 +155,7 @@ endif()
 
 
 target_include_directories(triwild_lib PUBLIC ${GMP_INCLUDE_DIRS})
+target_include_directories(triwild_lib PUBLIC "src/triwild")
 target_link_libraries(triwild_lib PUBLIC geogram igl::core ${GMP_LIBRARIES} nlopt)
 
 if(NOT TARGET json)
