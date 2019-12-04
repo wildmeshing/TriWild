@@ -91,7 +91,6 @@ set(SOURCE_FILES
 		extern/pymesh/MshLoader.h extern/pymesh/MshLoader.cpp
 		extern/pymesh/MshSaver.h extern/pymesh/MshSaver.cpp
 		extern/pymesh/Exception.h
-		extern/nlohmann/json.hpp
 		extern/CLI11.hpp
 
 		src/triwild/Logger.h
@@ -157,6 +156,14 @@ endif()
 
 target_include_directories(triwild_lib PUBLIC ${GMP_INCLUDE_DIRS})
 target_link_libraries(triwild_lib PUBLIC geogram igl::core ${GMP_LIBRARIES} nlopt)
+
+if(NOT TARGET json)
+	triwild_download_json()
+	add_library(json INTERFACE)
+	target_include_directories(json SYSTEM INTERFACE ${THIRD_PARTY_DIR}/json/include)
+endif()
+target_link_libraries(triwild_lib PUBLIC geogram igl::core ${GMP_LIBRARIES} nlopt json)
+
 
 
 
