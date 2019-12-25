@@ -548,17 +548,36 @@ void triwild::triangulation::simplify_input(Eigen::MatrixXd& V, std::vector<std:
 
 #include <geogram/delaunay/delaunay.h>
 void triwild::triangulation::BSP_subdivision(const Eigen::MatrixXd& V, const std::vector<std::array<int, 2>>& edges,
-        MeshData& mesh, std::vector<std::vector<int>>& tag_boundary_es) {
+        MeshData& mesh, std::vector<std::vector<int>>& tag_boundary_es, GEO::MeshFacetsAABB& b_tree) {
     ////delaunay
     Eigen::MatrixXd new_V = V;
     const int n = new_V.rows();
-    new_V.conservativeResize(n + 4, 2);
+//    new_V.conservativeResize(n + 4, 2);
     Eigen::RowVector2d min(args.box_min(0) - args.target_edge_len, args.box_min(1) - args.target_edge_len);
     Eigen::RowVector2d max(args.box_max(0) + args.target_edge_len, args.box_max(1) + args.target_edge_len);
-    new_V.row(n) = min;
-    new_V.row(n + 1) << min(0), max(1);
-    new_V.row(n + 2) = max;
-    new_V.row(n + 3) << max(0), min(1);
+//    new_V.row(n) = min;
+//    new_V.row(n + 1) << min(0), max(1);
+//    new_V.row(n + 2) = max;
+//    new_V.row(n + 3) << max(0), min(1);
+
+    //add voxel points
+    int nx = (max[0] - min[0])/(args.diagonal_len/10) + 1.5;
+    int ny = (max[1] - min[1])/(args.diagonal_len/10) + 1.5;
+    double threshold_2 = (args.diagonal_len/1000)*(args.diagonal_len/1000);
+    for(double i=0;i<=nx;i++) {
+        for (double j = 0; j <= ny; j++) {
+            Eigen::RowVector2d p(i / nx * min[0] + (1 - i / nx) * max[0], j / ny * min[1] + (1 - j / ny) * max[1]);
+            GEO::vec3 p0(p[0], p[1], 0);
+            GEO::vec3 nearest_point;
+            double sq_dist;
+            GEO::index_t prev_facet = b_tree.nearest_facet(p0, nearest_point, sq_dist);
+            if (sq_dist < threshold_2)
+                continue;
+
+            new_V.conservativeResize(new_V.rows() + 1, 2);
+            new_V.row(new_V.rows() - 1) = p;
+        }
+    }
 
     GEO::Delaunay::initialize();
     GEO::Delaunay_var delaunay2d = GEO::Delaunay::create(2, "BDEL2d");
@@ -584,13 +603,14 @@ void triwild::triangulation::BSP_subdivision(const Eigen::MatrixXd& V, const std
         cnt_conn_es[edges[i][1]]++;
     }
     auto &bsp_vertices = mesh.tri_vertices;
-    bsp_vertices.resize(n + 4);
+    bsp_vertices.resize(new_V.rows());
     for (int i = 0; i < new_V.rows(); i++) {
         bsp_vertices[i].pos[0] = new_V(i, 0);
         bsp_vertices[i].pos[1] = new_V(i, 1);
-        if (i >= n)
-            bsp_vertices[i].is_freezed = true;
-        else if (cnt_conn_es[i] == 1) {
+        if ((bsp_vertices[i].pos[0] == min[0] || bsp_vertices[i].pos[0] == max[0])
+            && (bsp_vertices[i].pos[1] == min[1] || bsp_vertices[i].pos[1] == max[1]))
+            bsp_vertices[i].is_freezed = true;//freeze bbox corners
+        if (i < n && cnt_conn_es[i] == 1) {
             bsp_vertices[i].is_on_point = true;
             bsp_vertices[i].input_posf.set(new_V(i, 0), new_V(i, 1));
         }
