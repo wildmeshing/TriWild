@@ -187,9 +187,9 @@ void triwild::feature::get_inflections(std::vector<std::vector<double>>& inflect
         if(inflections[i].empty())
             continue;
         std::sort(inflections[i].begin(), inflections[i].end());
-        if (inflections[i].front() == 0)
+		if (std::abs(inflections[i].front() - 0) < 1e-8)
             inflections[i].erase(inflections[i].begin());
-        if (inflections[i].back() == 1)
+        if (std::abs(inflections[i].back() - 1) < 1e-8)
             inflections[i].erase(inflections[i].begin() + inflections[i].size() - 1);
     }
 }
@@ -743,6 +743,32 @@ void triwild::feature::mu_separation(std::vector<std::vector<double>>& inflectio
             secondary_features[new_feature_id]->paras = {ts[i][removed_ranges[j]], ts[i][removed_ranges[j + 1]]};
         }
 
+        // for (int j = 0; j < ranges.size(); j += 2) {
+        //     if (j == ranges.size() - 2) {
+        //         features[i]->paras = {ts[i][ranges[j]], ts[i][ranges[j + 1]]};
+        //         samples[i] = std::vector<Point_2f>(samples[i].begin() + ranges[j],
+        //                                            samples[i].begin() + ranges[j + 1] + 1);
+        //         ts[i] = std::vector<double>(ts[i].begin() + ranges[j], ts[i].begin() + ranges[j + 1] + 1);
+        //         std::vector<double> new_inflection;
+        //         for (int infl: inflections[i]) {
+        //             if (infl > ranges[j] && infl < ranges[j + 1])
+        //                 new_inflection.push_back(infl);
+        //         }
+        //         inflections[i] = new_inflection;
+        //     } else {
+        //         int new_feature_id = push_back_new_feature(features[i]);
+        //         features[new_feature_id]->paras = {ts[i][ranges[j]], ts[i][ranges[j + 1]]};
+        //         samples.push_back(
+        //                 std::vector<Point_2f>(samples[i].begin() + ranges[j], samples[i].begin() + ranges[j + 1] + 1));
+        //         ts.push_back(std::vector<double>(ts[i].begin() + ranges[j], ts[i].begin() + ranges[j + 1] + 1));
+        //         inflections.emplace_back();
+        //         for (int infl: inflections[i]) {
+        //             if (infl > ranges[j] && infl < ranges[j + 1])
+        //                 inflections.back().push_back(infl);
+        //         }
+        //     }
+        // }
+        auto old_inflection = inflections[i];
         for (int j = 0; j < ranges.size(); j += 2) {
             if (j == ranges.size() - 2) {
                 features[i]->paras = {ts[i][ranges[j]], ts[i][ranges[j + 1]]};
@@ -750,8 +776,8 @@ void triwild::feature::mu_separation(std::vector<std::vector<double>>& inflectio
                                                    samples[i].begin() + ranges[j + 1] + 1);
                 ts[i] = std::vector<double>(ts[i].begin() + ranges[j], ts[i].begin() + ranges[j + 1] + 1);
                 std::vector<double> new_inflection;
-                for (int infl: inflections[i]) {
-                    if (infl > ranges[j] && infl < ranges[j + 1])
+                for (double infl: old_inflection) {
+                    if (infl > ts[i][ranges[j]] && infl < ts[i][ranges[j + 1]])
                         new_inflection.push_back(infl);
                 }
                 inflections[i] = new_inflection;
@@ -762,8 +788,8 @@ void triwild::feature::mu_separation(std::vector<std::vector<double>>& inflectio
                         std::vector<Point_2f>(samples[i].begin() + ranges[j], samples[i].begin() + ranges[j + 1] + 1));
                 ts.push_back(std::vector<double>(ts[i].begin() + ranges[j], ts[i].begin() + ranges[j + 1] + 1));
                 inflections.emplace_back();
-                for (int infl: inflections[i]) {
-                    if (infl > ranges[j] && infl < ranges[j + 1])
+                for (double infl: old_inflection) {
+                    if (infl > ts[i][ranges[j]] && infl < ts[i][ranges[j + 1]])
                         inflections.back().push_back(infl);
                 }
             }
@@ -874,32 +900,59 @@ void triwild::feature::remove_high_curvature(std::vector<std::vector<double>>& i
             secondary_features[new_feature_id]->paras = {ts[feature_id][removed_ranges[j]], ts[feature_id][removed_ranges[j + 1]]};
         }
 
+        // for (int j = 0; j < ranges.size(); j += 2) {
+        //     if (j == ranges.size() - 2) {
+        //         features[feature_id]->paras = {ts[feature_id][ranges[j]], ts[feature_id][ranges[j + 1]]};
+        //         samples[feature_id] = std::vector<Point_2f>(samples[feature_id].begin() + ranges[j],
+        //                                                     samples[feature_id].begin() + ranges[j + 1] + 1);
+        //         ts[feature_id] = std::vector<double>(ts[feature_id].begin() + ranges[j],
+        //                                              ts[feature_id].begin() + ranges[j + 1] + 1);
+        //         std::vector<double> new_inflection;
+        //         for (int infl: inflections[feature_id]) {
+        //             if (infl > ranges[j] && infl < ranges[j + 1])
+        //                 new_inflection.push_back(infl);
+        //         }
+        //         inflections[feature_id] = new_inflection;
+        //     } else {
+        //         int new_feature_id = push_back_new_feature(features[feature_id]);
+        //         features[new_feature_id]->paras = {ts[feature_id][ranges[j]], ts[feature_id][ranges[j + 1]]};
+        //         samples.push_back(
+        //                 std::vector<Point_2f>(samples[feature_id].begin() + ranges[j],
+        //                                       samples[feature_id].begin() + ranges[j + 1] + 1));
+        //         ts.push_back(std::vector<double>(ts[feature_id].begin() + ranges[j],
+        //                                          ts[feature_id].begin() + ranges[j + 1] + 1));
+        //         inflections.emplace_back();
+        //         for (int infl: inflections[feature_id]) {
+        //             if (infl > ranges[j] && infl < ranges[j + 1])
+        //                 inflections.back().push_back(infl);
+        //             //todo: infl == ranges[j]
+        //         }
+        //     }
+        // }
+        int i = feature_id;
+        auto old_inflection = inflections[i];
         for (int j = 0; j < ranges.size(); j += 2) {
             if (j == ranges.size() - 2) {
-                features[feature_id]->paras = {ts[feature_id][ranges[j]], ts[feature_id][ranges[j + 1]]};
-                samples[feature_id] = std::vector<Point_2f>(samples[feature_id].begin() + ranges[j],
-                                                            samples[feature_id].begin() + ranges[j + 1] + 1);
-                ts[feature_id] = std::vector<double>(ts[feature_id].begin() + ranges[j],
-                                                     ts[feature_id].begin() + ranges[j + 1] + 1);
+                features[i]->paras = {ts[i][ranges[j]], ts[i][ranges[j + 1]]};
+                samples[i] = std::vector<Point_2f>(samples[i].begin() + ranges[j],
+                                                   samples[i].begin() + ranges[j + 1] + 1);
+                ts[i] = std::vector<double>(ts[i].begin() + ranges[j], ts[i].begin() + ranges[j + 1] + 1);
                 std::vector<double> new_inflection;
-                for (int infl: inflections[feature_id]) {
-                    if (infl > ranges[j] && infl < ranges[j + 1])
+                for (double infl: old_inflection) {
+                    if (infl > ts[i][ranges[j]] && infl < ts[i][ranges[j + 1]])
                         new_inflection.push_back(infl);
                 }
-                inflections[feature_id] = new_inflection;
+                inflections[i] = new_inflection;
             } else {
-                int new_feature_id = push_back_new_feature(features[feature_id]);
-                features[new_feature_id]->paras = {ts[feature_id][ranges[j]], ts[feature_id][ranges[j + 1]]};
+                int new_feature_id = push_back_new_feature(features[i]);
+                features[new_feature_id]->paras = {ts[i][ranges[j]], ts[i][ranges[j + 1]]};
                 samples.push_back(
-                        std::vector<Point_2f>(samples[feature_id].begin() + ranges[j],
-                                              samples[feature_id].begin() + ranges[j + 1] + 1));
-                ts.push_back(std::vector<double>(ts[feature_id].begin() + ranges[j],
-                                                 ts[feature_id].begin() + ranges[j + 1] + 1));
+                        std::vector<Point_2f>(samples[i].begin() + ranges[j], samples[i].begin() + ranges[j + 1] + 1));
+                ts.push_back(std::vector<double>(ts[i].begin() + ranges[j], ts[i].begin() + ranges[j + 1] + 1));
                 inflections.emplace_back();
-                for (int infl: inflections[feature_id]) {
-                    if (infl > ranges[j] && infl < ranges[j + 1])
+                for (double infl: old_inflection) {
+                    if (infl > ts[i][ranges[j]] && infl < ts[i][ranges[j + 1]])
                         inflections.back().push_back(infl);
-                    //todo: infl == ranges[j]
                 }
             }
         }
@@ -953,7 +1006,7 @@ void triwild::feature::cut_inflections(std::vector<std::vector<double>>& inflect
                 ts[feature_id] = std::vector<double>(ts[feature_id].begin() + ranges[j],
                                                      ts[feature_id].begin() + ranges[j + 1] + 1);
 
-                inflections.clear();
+                inflections[feature_id].clear();
                 features[feature_id]->is_inflection = {true, false};
             } else {
                 int new_feature_id = push_back_new_feature(features[feature_id]);
