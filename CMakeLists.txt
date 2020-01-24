@@ -14,6 +14,13 @@ if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Release")
 endif()
 
+get_directory_property(HAS_PARENT PARENT_DIRECTORY)
+if(HAS_PARENT)
+	set(TRIWILD_TOPLEVEL_PROJECT OFF)
+else()
+	set(TRIWILD_TOPLEVEL_PROJECT ON)
+endif()
+
 ################################################################################
 # Build static binaries
 #set(BUILD_SHARED_LIBS OFF)
@@ -159,7 +166,8 @@ target_include_directories(triwild_lib PUBLIC ${GMP_INCLUDE_DIRS})
 target_link_libraries(triwild_lib PUBLIC geogram igl::core ${GMP_LIBRARIES} nlopt)
 
 
-
-#add_executable(TriWild main.cpp UIPanel.hpp UIPanel.cpp)
-add_executable(TriWild src/main.cpp)
-target_link_libraries(TriWild triwild_lib)
+if(TRIWILD_TOPLEVEL_PROJECT)
+	#add_executable(TriWild main.cpp UIPanel.hpp UIPanel.cpp)
+	add_executable(TriWild src/main.cpp)
+	target_link_libraries(TriWild triwild_lib)
+endif()
