@@ -16,7 +16,7 @@
 #include "FeatureElements.h"
 #include "TrimeshElements.h"
 
-#include "../../extern/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
 namespace triwild {

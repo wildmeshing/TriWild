@@ -27,7 +27,7 @@
 #include <geogram/mesh/mesh_AABB.h>
 #include <geogram/delaunay/delaunay.h>
 
-#include "../../extern/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
 
@@ -491,12 +491,12 @@ for (size_t i = 0; i < mesh.tris.size(); i++) {
 }
 //mesh,
 struct HV{ int id; bool boundary = false; Eigen::Vector3d v;std::unordered_set<int> nts; std::unordered_set<int> nvs; std::unordered_set<int> nes;};
-struct HE{ 
-	int id; 
+struct HE{
+	int id;
 	int tag = -1;
-	std::vector<int> vs; 
+	std::vector<int> vs;
 	std::vector<double> colors;//include blur
-	bool boundary = false; 
+	bool boundary = false;
 	std::vector<int> nts;
 
 };
@@ -525,14 +525,14 @@ auto build_connectivity = [&](HM &m){
 			HE e;
 			e.id = E_num;
 			e.vs.push_back(std::get<0>(temp[i]));
-			e.vs.push_back(std::get<1>(temp[i]));				
+			e.vs.push_back(std::get<1>(temp[i]));
 			e.boundary = true;
 			m.Es.push_back(e);
 		}
 		else if (i != 0 && (std::get<0>(temp[i]) == std::get<0>(temp[i - 1]) &&
 			std::get<1>(temp[i]) == std::get<1>(temp[i - 1])))
 			m.Es[E_num].boundary = false;
-		
+
 		m.Fs[std::get<2>(temp[i])].es[std::get<3>(temp[i])] = E_num;
 
 		m.Es[E_num].nts.push_back(std::get<2>(temp[i]));
@@ -550,15 +550,15 @@ auto build_connectivity = [&](HM &m){
 		if(e.boundary)
 		{
 			m.Vs[e.vs[0]].boundary = true;
-			m.Vs[e.vs[1]].boundary = true;	
+			m.Vs[e.vs[1]].boundary = true;
 		}
 		m.Vs[e.vs[0]].nvs.insert(e.vs[1]);
 		m.Vs[e.vs[1]].nvs.insert(e.vs[0]);
-	
+
 		m.Vs[e.vs[0]].nes.insert(e.id);
 		m.Vs[e.vs[1]].nes.insert(e.id);
 	}
-	
+
 	for(auto &f:m.Fs)
 	{
 		for(auto vid: f.vs)
@@ -587,14 +587,14 @@ for(int i=0;i<F.rows();i++)
 	ht.vs.push_back(F(i,2));
 	for(auto vid: tri_nodes[i])
 		ht.vs.push_back(vid);
-	
+
 	hm.Fs.push_back(ht);
 }
 build_connectivity(hm);
 
 write_OBJ(V.transpose(), F.transpose(), args.input+"_remeshed.obj");
 
-struct feature_arch{int id; 
+struct feature_arch{int id;
 	std::vector<int> es; std::vector<std::pair<double, int>> v_ts;
 	std::vector<std::vector<int>> ess;
 	std::vector<std::vector<std::pair<double, int>>> vss;
@@ -628,7 +628,7 @@ auto read_feature =[&](std::string path, std::vector<feature_arch> &arcs){
     }
 };
 auto get_color = [&](const std::vector<feature_arch> &arcs, int curve_id, double t, bool lor, std::vector<double> &color){
-	
+
 	color.clear();
 	std::vector<double> color_chain;
 	if(lor) color_chain = arcs[curve_id].leftColor;
@@ -680,7 +680,7 @@ for(auto &e: hm.Es)
 	const int v1 = small_to_big_v[e.vs[1]];
 	const int edge_tag = triwild::optimization::get_feature_edge_tag(mesh, v0, v1);
 	E_label[e.id] = edge_tag;
-	if(edge_tag>=0){		
+	if(edge_tag>=0){
 		arches[feature::features[edge_tag]->curve_id].es.push_back(e.id);
 
 		for(int i =0;i<2;i++)
@@ -700,7 +700,7 @@ for(auto &e: hm.Es)
 			{
 				std::cout<<"t: "<<t<<std::endl;
 				std::cout<<"evid: "<<e.vs[i]<<std::endl;
-			}	
+			}
 
 			arches[feature::features[edge_tag]->curve_id].v_ts.push_back(std::make_pair(t, e.vs[i]));
 		}
@@ -720,7 +720,7 @@ for(int i=0;i<F.rows();i++)
 	ht.vs.push_back(F(i,2));
 	for(auto vid: tri_nodes[i])
 		ht.vs.push_back(vid);
-	
+
 	hm_.Fs.push_back(ht);
 }
 for(auto &v: hm.Vs)
@@ -730,17 +730,17 @@ for(auto &v: hm.Vs)
 	v_.v = v.v;
 	hm_.Vs.push_back(v_);
 	V2Vs[v.id].push_back(v_.id);
-	Vs2V.push_back(v.id);	
+	Vs2V.push_back(v.id);
 }
 for(auto &v: hm.Vs)
-{	
+{
 	assert(v.nts.size());
 	int i = -1;
 	for ( auto it = v.nts.begin(); it != v.nts.end(); ++it)
 	{
 		i++;
 		if(i==0) continue;
-		
+
 		HV v_;
 		v_.id = hm_.Vs.size();
 		v_.v = v.v;
@@ -826,11 +826,11 @@ for(auto &e: hm_.Es)
 		{
 			std::swap(v2, v3);
 		}
-		
+
 		if(v0 != v2)
 		{
 			Vs_2Vs_reverse[v0].insert(Vs_2Vs_reverse[v2].begin(), Vs_2Vs_reverse[v2].end());
-			
+
 			for(auto &vid: Vs_2Vs_reverse[v2])
 				Vs2Vs_[vid] = v0;
 			Vs_2Vs_reverse[v2].clear();
@@ -838,7 +838,7 @@ for(auto &e: hm_.Es)
 		if(v1 != v3)
 		{
 			Vs_2Vs_reverse[v1].insert(Vs_2Vs_reverse[v3].begin(), Vs_2Vs_reverse[v3].end());
-			
+
 			for(auto &vid: Vs_2Vs_reverse[v3])
 				Vs2Vs_[vid] = v1;
 			Vs_2Vs_reverse[v3].clear();
@@ -852,13 +852,13 @@ for(auto &f: hm_.Fs)
 {
 	HF ht;
 	ht.id = f.id;
-	for(auto &vid : f.vs) ht.vs.push_back(Vs2Vs_[vid]);	
+	for(auto &vid : f.vs) ht.vs.push_back(Vs2Vs_[vid]);
 	hm_2.Fs.push_back(ht);
 }
 std::vector<int> V22V(hm_.Vs.size());
 std::vector<int> V22V_reverse;
 for(auto &v: hm_.Vs)
-{	
+{
 	if(Vs_2Vs_reverse[v.id].size())
 	{
 		HV v_;
@@ -871,7 +871,7 @@ for(auto &v: hm_.Vs)
 }
 for(auto &f: hm_2.Fs)
 {
-	for(auto &vid : f.vs) vid = V22V[vid];	
+	for(auto &vid : f.vs) vid = V22V[vid];
 }
 build_connectivity(hm_2);
 
@@ -916,7 +916,7 @@ for(auto &e: hm_2.Es)
 			std::cout<<"one edge feature not cleaned"<<std::endl;
 			std::cout<<"ev0 ev1: "<<ev0 << " "<<ev1<<std::endl;
 			std::cout<<"v0_map v1_map: "<<v0_map << " "<<v1_map<<std::endl;
-		}	
+		}
 		continue;
 	}
 	if( edge_tag != -1)
@@ -1000,7 +1000,7 @@ for(auto &e: hm_2.Es)
 
 		std::vector<double> color;
 		get_color(arches, a.id, t0, left, color);
-		e.colors = color;	
+		e.colors = color;
 		get_color(arches, a.id, t1, left, color);
 		e.colors.insert(e.colors.end(), color.begin(), color.end());
 	}
@@ -1086,7 +1086,7 @@ if(!tags.fail())
 	{
 		const int v0 = M.edges.vertex(e, 0);
 		const int v1 = M.edges.vertex(e, 1);
-		
+
 
 		const auto &nes0 = hm.Vs[v0].nes;
 		const auto &nes1 = hm.Vs[v1].nes;
@@ -1109,7 +1109,7 @@ if(!tags.fail())
 
 		}
 		assert(sharedes.size());
-		
+
 		tags<<(hm.Es[sharedes[0]].tag+1)<<"\n";
 
 		auto color = hm.Es[sharedes[0]].colors;

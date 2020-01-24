@@ -57,3 +57,11 @@ function(triwild_download_nlopt)
         GIT_TAG        37b74a8c2037eea5dc72fea7eeb9b850fa978913
     )
 endfunction()
+
+## Json
+function(triwild_download_json)
+    triwild_download_project(json
+        GIT_REPOSITORY https://github.com/jdumas/json
+        GIT_TAG        0901d33bf6e7dfe6f70fd9d142c8f5c6695c6c5b
+    )
+endfunction()

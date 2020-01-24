@@ -172,7 +172,7 @@ void triwild::do_triwild(const Eigen::MatrixXd &V_in, const Eigen::MatrixXi &E_i
     igl_timer.start();
     MeshData mesh;
     std::vector<std::vector<int>> tag_boundary_es;
-    triangulation::BSP_subdivision(V, edges, mesh, tag_boundary_es);
+    triangulation::BSP_subdivision(V, edges, mesh, tag_boundary_es, b_tree);
     t = igl_timer.getElapsedTime();
     bsp_time = t;
     cout << "BSP subdivision done." << endl;
