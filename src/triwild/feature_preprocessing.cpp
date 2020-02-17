@@ -972,17 +972,35 @@ void triwild::feature::cut_inflections(std::vector<std::vector<double>>& inflect
         std::vector<int> ranges;
         for (int j = 0; j < ts[feature_id].size() - 1; j++) {
             if (ts[feature_id][j] == inflections[feature_id][cnt]) {
+                if (!ranges.empty() && j - ranges.back() < 3)
+                    continue;
+                if (j - 0 < 3)
+                    continue;
+                if (j - (ts[feature_id].size() - 1) < 3)
+                    continue;
+
                 ranges.push_back(j);
+                if (j != 0)
+                    ranges.push_back(j);
                 cnt++;
-                cout<<cnt<<endl;
+//                cout<<cnt<<endl;
             } else if (ts[feature_id][j] < inflections[feature_id][cnt]
-                && ts[feature_id][j + 1] > inflections[feature_id][cnt]) {
+                       && ts[feature_id][j + 1] > inflections[feature_id][cnt]) {
+                if (!ranges.empty() && (j + 1) - ranges.back() < 3)
+                    continue;
+                if ((j + 1) - 0 < 3)
+                    continue;
+                if ((j + 1) - (ts[feature_id].size() - 1) < 3)
+                    continue;
+
                 ts[feature_id].insert(ts[feature_id].begin() + j + 1, inflections[feature_id][cnt]);
                 samples[feature_id].insert(samples[feature_id].begin() + j + 1,
                                            features[feature_id]->eval(inflections[feature_id][cnt]));
                 ranges.push_back(j + 1);
+                if (j + 1 != ts[feature_id].size() - 1)
+                    ranges.push_back(j + 1);
                 cnt++;
-                cout<<cnt<<endl;
+//                cout<<cnt<<endl;
                 j++;
             }
 //            else if (ts[feature_id][j + 1] == inflections[feature_id][cnt]) {
@@ -998,7 +1016,8 @@ void triwild::feature::cut_inflections(std::vector<std::vector<double>>& inflect
         if(ranges.back()!=ts[feature_id].size()-1)
             ranges.push_back(ts[feature_id].size()-1);
 
-        for (int j = 0; j < ranges.size() - 1; j++) {
+//        for (int j = 0; j < ranges.size() - 1; j++) {
+        for (int j = 0; j < ranges.size(); j += 2) {
             if (j == ranges.size() - 2) {
                 features[feature_id]->paras = {ts[feature_id][ranges[j]], ts[feature_id][ranges[j + 1]]};
                 samples[feature_id] = std::vector<Point_2f>(samples[feature_id].begin() + ranges[j],
