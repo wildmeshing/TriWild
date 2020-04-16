@@ -178,6 +178,10 @@ int main(int argc, char* argv[]) {
 
     ///////////////////
     if (!args.is_preserving_feature) {
+        if (cut_outside)
+            optimization::erase_outside(mesh);
+        if (hole_file != "")
+            optimization::erase_holes(mesh, hole_file);
         optimization::output_mesh(mesh);
 
         if (args.log_file != "") {
