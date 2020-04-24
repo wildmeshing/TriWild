@@ -1160,14 +1160,13 @@ void triwild::feature::gen_segments(Eigen::MatrixXd& V, std::vector<std::array<i
 
     //duplicate/degenerate edges
     for (int i = 0; i < edges.size(); i++) {
-        auto &e = edges[i];
         edges[i][0] = VI(edges[i][0]);
         edges[i][1] = VI(edges[i][1]);
-        if (e[0] == e[1]) {
+        if (edges[i][0] == edges[i][1]) {
             edges.erase(edges.begin() + i);
             i--;
-        } else if (e[0] > e[1])
-            std::swap(e[0], e[1]);
+        } else if (edges[i][0] > edges[i][1])
+            std::swap(edges[i][0], edges[i][1]);
     }
     optimization::vector_unique(edges);
 
