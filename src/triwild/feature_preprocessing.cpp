@@ -970,35 +970,48 @@ void triwild::feature::cut_inflections(std::vector<std::vector<double>>& inflect
 
         int cnt = 0;
         std::vector<int> ranges;
-        for (int j = 0; j < ts[feature_id].size() - 1; j++) {
-            if (ts[feature_id][j] == inflections[feature_id][cnt]) {
-                ranges.push_back(j);
-                cnt++;
-                cout<<cnt<<endl;
-            } else if (ts[feature_id][j] < inflections[feature_id][cnt]
-                && ts[feature_id][j + 1] > inflections[feature_id][cnt]) {
-                ts[feature_id].insert(ts[feature_id].begin() + j + 1, inflections[feature_id][cnt]);
-                samples[feature_id].insert(samples[feature_id].begin() + j + 1,
-                                           features[feature_id]->eval(inflections[feature_id][cnt]));
-                ranges.push_back(j + 1);
-                cnt++;
-                cout<<cnt<<endl;
-                j++;
+        int j = 0;
+        for(double infl: inflections[feature_id]) {
+            for (; j < ts[feature_id].size() - 1; j++) {
+                if (ts[feature_id][j] == infl) {
+                    if (!ranges.empty() && j - ranges.back() < 3)
+                        continue;
+                    if (j - 0 < 3)
+                        continue;
+                    if (j - (ts[feature_id].size() - 1) < 3)
+                        continue;
+
+                    ranges.push_back(j);
+                    if (j != 0)
+                        ranges.push_back(j);
+                    break;
+                } else if (ts[feature_id][j] < infl && ts[feature_id][j + 1] > infl) {
+                    if (!ranges.empty() && (j + 1) - ranges.back() < 3)
+                        continue;
+                    if ((j + 1) - 0 < 3)
+                        continue;
+                    if ((j + 1) - (ts[feature_id].size() - 1) < 3)
+                        continue;
+
+                    ts[feature_id].insert(ts[feature_id].begin() + j + 1, infl);
+                    samples[feature_id].insert(samples[feature_id].begin() + j + 1, features[feature_id]->eval(infl));
+                    ranges.push_back(j + 1);
+                    if (j + 1 != ts[feature_id].size() - 1)
+                        ranges.push_back(j + 1);
+                    break;
+                }
             }
-//            else if (ts[feature_id][j + 1] == inflections[feature_id][cnt]) {
-//                ranges.push_back(j + 1);
-//                cnt++;
-//            }
         }
         if(ranges.empty())
             continue;
 
-        if(ranges.front()!=0)
+        if(ranges.front() != 0)
             ranges.insert(ranges.begin(), 0);
-        if(ranges.back()!=ts[feature_id].size()-1)
+        if(ranges.back() != ts[feature_id].size()-1)
             ranges.push_back(ts[feature_id].size()-1);
 
-        for (int j = 0; j < ranges.size() - 1; j++) {
+//        for (int j = 0; j < ranges.size() - 1; j++) {
+        for (int j = 0; j < ranges.size(); j += 2) {
             if (j == ranges.size() - 2) {
                 features[feature_id]->paras = {ts[feature_id][ranges[j]], ts[feature_id][ranges[j + 1]]};
                 samples[feature_id] = std::vector<Point_2f>(samples[feature_id].begin() + ranges[j],
@@ -1147,14 +1160,13 @@ void triwild::feature::gen_segments(Eigen::MatrixXd& V, std::vector<std::array<i
 
     //duplicate/degenerate edges
     for (int i = 0; i < edges.size(); i++) {
-        auto &e = edges[i];
         edges[i][0] = VI(edges[i][0]);
         edges[i][1] = VI(edges[i][1]);
-        if (e[0] == e[1]) {
-            edges.erase(edges.begin() + 1);
+        if (edges[i][0] == edges[i][1]) {
+            edges.erase(edges.begin() + i);
             i--;
-        } else if (e[0] > e[1])
-            std::swap(e[0], e[1]);
+        } else if (edges[i][0] > edges[i][1])
+            std::swap(edges[i][0], edges[i][1]);
     }
     optimization::vector_unique(edges);
 
