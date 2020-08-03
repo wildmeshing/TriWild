@@ -41,8 +41,8 @@ matrix:
 install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH"; fi
 - eval "${MATRIX_EVAL}"
-- ccache --max-size=5.0G
-- ccache -V && ccache --show-stats && ccache --zero-stats
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; ccache --max-size=5.0G; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; ccache -V && ccache --show-stats && ccache --zero-stats; fi
 
 script:
 - git clone https://github.com/wildmeshing/data.git
@@ -53,5 +53,5 @@ script:
 - ls ../
 - ./TriWild --input ../data/rocket.obj
 - ./TriWild --input ../data/rocket.obj --feature-input ../data/rocket.json
-- ccache --show-stats
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; ccache --show-stats; fi
 - cd ..
