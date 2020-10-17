@@ -146,6 +146,18 @@ bool triwild::optimization::collapse_an_edge(MeshData &mesh, GEO::MeshFacetsAABB
     //    if(mesh.is_curved)
     //        old_max_energy = mesh.stop_energy > old_max_energy ? mesh.stop_energy : old_max_energy;
 
+    if (mesh.tri_vertices[v1_id].feature_infos.size() > 0) {
+        int feature_id = get_feature_edge_tag(mesh, v1_id, v2_id);
+
+        if (feature_id >= 0) {
+            if (!mesh.is_curved && !is_valid_feature_edge_close(mesh, v1_id, mesh.tri_vertices[v2_id].posf,
+                                                                mesh.tri_vertices[v2_id].get_t(feature_id)))
+                return false;
+        } else {
+            return false;
+        }
+    }
+
     for (int t_id : mesh.tri_vertices[v1_id].conn_tris) {
         if (std::find(mesh.tris[t_id].begin(), mesh.tris[t_id].end(), v2_id) == mesh.tris[t_id].end()) {
             int j = std::find(mesh.tris[t_id].begin(), mesh.tris[t_id].end(), v1_id) - mesh.tris[t_id].begin();
@@ -179,63 +191,63 @@ bool triwild::optimization::collapse_an_edge(MeshData &mesh, GEO::MeshFacetsAABB
                 return false;
             }
 
-            if (mesh.tri_vertices[v1_id].feature_infos.size() > 0) {
-                //                if(!is_valid_feature_edge_length(mesh, v1_id, mesh.tri_vertices[v2_id].posf))
-                int feature_id = get_feature_edge_tag(mesh, v1_id, v2_id);
-
-                if (feature_id >= 0) {
-                    if (!mesh.is_curved && !is_valid_feature_edge_close(mesh, v1_id, mesh.tri_vertices[v2_id].posf,
-                                                                        mesh.tri_vertices[v2_id].get_t(feature_id)))
-                        return false;
-                } else {
-                    return false;
-
-                    // if (mesh.tri_vertices[v2_id].feature_infos.size() == 0)
-                    //     return false;
-
-                    // //snap two features --> check feature epsilon
-                    // int v2_feature_id = -1;
-                    // double v2_t;
-                    // for (auto &info: mesh.tri_vertices[v2_id].feature_infos) {
-                    //     double dis = feature::features[info[0]]->distance(mesh.tri_vertices[v1_id].posf, info[1]);//todo
-                    //     if (dis < mesh.feature_epsilon) {//todo: feature epsilon
-                    //         v2_feature_id = info[0];
-                    //         v2_t = info[1];
-                    //         break;
-                    //     }
-                    // }
-                    // if (v2_feature_id <
-                    //     mesh.tri_vertices[v1_id].feature_infos[0][0])//always snap to vertex with larger feature_id
-                    //     return false;
-
-                    // double dd = mesh.dd;//todo: sampling density
-                    // //sample feature edges of v1
-                    // Point_2f &p0 = mesh.tri_vertices[v1_id].posf;
-                    // std::unordered_set<int> n_v_ids;
-                    // for (int t_id:mesh.tri_vertices[v1_id].conn_tris) {
-                    //     for (int j = 0; j < 3; j++)
-                    //         if (mesh.tag_feature_es[t_id][j] >= 0) {
-                    //             n_v_ids.insert(mesh.tag_feature_es[t_id][(j + 1) % 3] == v1_id ?
-                    //                            mesh.tag_feature_es[t_id][(j + 2) % 3] :
-                    //                            mesh.tag_feature_es[t_id][(j + 1) % 3]);
-                    //             break;
-                    //         }
-                    // }
-                    // assert(n_v_ids.size() == 2);
-                    // //compute dis for samples
-                    // for (int v_id:n_v_ids) {
-                    //     Point_2f &p = mesh.tri_vertices[v_id].posf;
-                    //     int N = std::sqrt(edge_length_2(p, p0)) / mesh.dd + 0.5;
-                    //     for (double n = 1; n <= N; n++) {
-                    //         Point_2f tmp = p0 * (n / N) + p * (N - n) / N;
-                    //         if (feature::features[v2_feature_id]->distance(mesh.tri_vertices[v1_id].posf, v2_t)
-                    //             > mesh.feature_epsilon)
-                    //             return false;
-                    //     }
-                    // }
-                    // is_snap_features = true;
-                }
-            }
+//            if (mesh.tri_vertices[v1_id].feature_infos.size() > 0) {
+//                //                if(!is_valid_feature_edge_length(mesh, v1_id, mesh.tri_vertices[v2_id].posf))
+//                int feature_id = get_feature_edge_tag(mesh, v1_id, v2_id);
+//
+//                if (feature_id >= 0) {
+//                    if (!mesh.is_curved && !is_valid_feature_edge_close(mesh, v1_id, mesh.tri_vertices[v2_id].posf,
+//                                                                        mesh.tri_vertices[v2_id].get_t(feature_id)))
+//                        return false;
+//                } else {
+//                    return false;
+//
+//                    // if (mesh.tri_vertices[v2_id].feature_infos.size() == 0)
+//                    //     return false;
+//
+//                    // //snap two features --> check feature epsilon
+//                    // int v2_feature_id = -1;
+//                    // double v2_t;
+//                    // for (auto &info: mesh.tri_vertices[v2_id].feature_infos) {
+//                    //     double dis = feature::features[info[0]]->distance(mesh.tri_vertices[v1_id].posf, info[1]);//todo
+//                    //     if (dis < mesh.feature_epsilon) {//todo: feature epsilon
+//                    //         v2_feature_id = info[0];
+//                    //         v2_t = info[1];
+//                    //         break;
+//                    //     }
+//                    // }
+//                    // if (v2_feature_id <
+//                    //     mesh.tri_vertices[v1_id].feature_infos[0][0])//always snap to vertex with larger feature_id
+//                    //     return false;
+//
+//                    // double dd = mesh.dd;//todo: sampling density
+//                    // //sample feature edges of v1
+//                    // Point_2f &p0 = mesh.tri_vertices[v1_id].posf;
+//                    // std::unordered_set<int> n_v_ids;
+//                    // for (int t_id:mesh.tri_vertices[v1_id].conn_tris) {
+//                    //     for (int j = 0; j < 3; j++)
+//                    //         if (mesh.tag_feature_es[t_id][j] >= 0) {
+//                    //             n_v_ids.insert(mesh.tag_feature_es[t_id][(j + 1) % 3] == v1_id ?
+//                    //                            mesh.tag_feature_es[t_id][(j + 2) % 3] :
+//                    //                            mesh.tag_feature_es[t_id][(j + 1) % 3]);
+//                    //             break;
+//                    //         }
+//                    // }
+//                    // assert(n_v_ids.size() == 2);
+//                    // //compute dis for samples
+//                    // for (int v_id:n_v_ids) {
+//                    //     Point_2f &p = mesh.tri_vertices[v_id].posf;
+//                    //     int N = std::sqrt(edge_length_2(p, p0)) / mesh.dd + 0.5;
+//                    //     for (double n = 1; n <= N; n++) {
+//                    //         Point_2f tmp = p0 * (n / N) + p * (N - n) / N;
+//                    //         if (feature::features[v2_feature_id]->distance(mesh.tri_vertices[v1_id].posf, v2_t)
+//                    //             > mesh.feature_epsilon)
+//                    //             return false;
+//                    //     }
+//                    // }
+//                    // is_snap_features = true;
+//                }
+//            }
 
             new_qs.push_back(new_q);
             changed_t_ids.push_back(t_id);
