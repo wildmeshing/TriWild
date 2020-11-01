@@ -146,6 +146,7 @@ bool triwild::optimization::collapse_an_edge(MeshData &mesh, GEO::MeshFacetsAABB
     //    if(mesh.is_curved)
     //        old_max_energy = mesh.stop_energy > old_max_energy ? mesh.stop_energy : old_max_energy;
 
+    //feature edge check
     if (mesh.tri_vertices[v1_id].feature_infos.size() > 0) {
         int feature_id = get_feature_edge_tag(mesh, v1_id, v2_id);
 
@@ -153,9 +154,13 @@ bool triwild::optimization::collapse_an_edge(MeshData &mesh, GEO::MeshFacetsAABB
             if (!mesh.is_curved && !is_valid_feature_edge_close(mesh, v1_id, mesh.tri_vertices[v2_id].posf,
                                                                 mesh.tri_vertices[v2_id].get_t(feature_id)))
                 return false;
-        } else {
+        } else
             return false;
-        }
+    }
+    //boundary edge check
+    if (mesh.tri_vertices[v1_id].is_on_boundary
+        && l != 0 && !is_valid_envelop(mesh, b_tree, v1_id, mesh.tri_vertices[v2_id].posf)) {
+        return false;
     }
 
     for (int t_id : mesh.tri_vertices[v1_id].conn_tris) {
@@ -183,13 +188,13 @@ bool triwild::optimization::collapse_an_edge(MeshData &mesh, GEO::MeshFacetsAABB
                 return false;
             }
 
-            if (mesh.tri_vertices[v1_id].is_on_boundary
-                //                && mesh.tri_vertices[v1_id].feature_infos.size() == 0
-                //                && !mesh.is_curved //todo: should be "skip checking feature edges"
-                && l != 0 && !is_valid_envelop(mesh, b_tree, v1_id, mesh.tri_vertices[v2_id].posf)) {
-                //                cout << "E";
-                return false;
-            }
+//            if (mesh.tri_vertices[v1_id].is_on_boundary
+//                //                && mesh.tri_vertices[v1_id].feature_infos.size() == 0
+//                //                && !mesh.is_curved //todo: should be "skip checking feature edges"
+//                && l != 0 && !is_valid_envelop(mesh, b_tree, v1_id, mesh.tri_vertices[v2_id].posf)) {
+//                //                cout << "E";
+//                return false;
+//            }
 
 //            if (mesh.tri_vertices[v1_id].feature_infos.size() > 0) {
 //                //                if(!is_valid_feature_edge_length(mesh, v1_id, mesh.tri_vertices[v2_id].posf))
