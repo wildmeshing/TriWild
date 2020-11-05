@@ -150,7 +150,7 @@ jobs:
             -B build ^
             -S .
           cd build
-          ninja -j2
+          ninja -j1
 
       - name: Run Example
         shell: powershell
