@@ -90,7 +90,7 @@ jobs:
 
   Windows:
     name: Windows (${{ matrix.config }})
-    runs-on: windows-2019
+    runs-on: windows-2017
     env:
       CC: cl.exe
       CXX: cl.exe
