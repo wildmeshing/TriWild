@@ -4,8 +4,7 @@
 Yixin Hu, Teseo Schneider, Xifeng Gao, Qingnan Zhou, Alec Jacobson, Denis Zorin, Daniele Panozzo.
 ACM Transactions on Graphics (SIGGRAPH 2019).
 
-[![Build Status](https://travis-ci.org/wildmeshing/TriWild.svg?branch=master)](https://travis-ci.org/wildmeshing/TriWild)
-[![Build status](https://ci.appveyor.com/api/projects/status/3k8lru312sw46hs5/branch/master?svg=true)](https://ci.appveyor.com/project/YixinHu69838/triwild/branch/master)
+![Build](https://github.com/wildmeshing/TriWild/workflows/Build/badge.svg)
 [![Build Status](https://img.shields.io/docker/cloud/build/yixinhu/triwild.svg)](https://hub.docker.com/r/yixinhu/triwild)
 
 ## Important Tips
@@ -34,7 +33,7 @@ ACM Transactions on Graphics (SIGGRAPH 2019).
  publisher = {ACM},
  address = {New York, NY, USA},
  keywords = {curved triangulation, mesh generation, robust geometry processing},
-} 
+}
 ```
 
 💡💡💡 Check our **[license](https://github.com/wildmeshing/TriWild#license)** first.
@@ -73,7 +72,7 @@ docker run --rm -v "$(pwd)":/data yixinhu/triwild /app/TriWild/build/TriWild [Tr
 ```
 
 ### via CMake
-Our code was originally developed on MacOS and has been tested on Linux and Windows. We provide the commands for installing TriWild in Unix OS: 
+Our code was originally developed on MacOS and has been tested on Linux and Windows. We provide the commands for installing TriWild in Unix OS:
 
 - Clone the repository into your local machine:
 
