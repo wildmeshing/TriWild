@@ -35,8 +35,8 @@ endfunction()
 ## geogram
 function(triwild_download_geogram)
     triwild_download_project(geogram
-        GIT_REPOSITORY https://github.com/alicevision/geogram
-        GIT_TAG        0ac4a5889f8eaef9372b888126deec2334128158
+        GIT_REPOSITORY https://github.com/polyfem/geogram.git
+        GIT_TAG        e6b9612f1146370e40deaa341b4dd7ef90502102
     )
 endfunction()
 
