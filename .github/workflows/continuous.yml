@@ -98,7 +98,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config: [Release]
+        config: [Debug, Release]
     steps:
       - name: Stetup Conda
         uses: s-weigand/setup-conda@v1
