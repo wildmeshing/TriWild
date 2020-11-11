@@ -1,5 +1,6 @@
 # Use an official Python runtime as a parent image
 FROM ubuntu
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Install any needed packages specified in requirements.txt
 RUN apt-get update && apt-get install -y git cmake g++ libgmp3-dev
