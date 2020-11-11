@@ -45,7 +45,7 @@ endfunction()
 function(triwild_download_igl)
     triwild_download_project(libigl
         GIT_REPOSITORY https://github.com/libigl/libigl
-        GIT_TAG        f6b406427400ed7ddb56cfc2577b6af571827c8c
+        GIT_TAG        45cfc79fede992ea3923ded9de3c21d1c4faced1
     )
 endfunction()
 
