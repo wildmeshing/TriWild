@@ -38,7 +38,7 @@ void triwild::optimization::edge_splitting(MeshData &mesh) {
     if (t_slot_size < queue_l.size() * 3 * 2)
         mesh.tris.reserve(queue_l.size() * 3 * 2 - t_slot_size + 1);
 
-    if (mesh.is_edge_length_achieved || queue_l.top().weight >= mesh.ideal_edge_length)
+    if (mesh.is_edge_length_achieved || queue_l.empty() || queue_l.top().weight >= mesh.ideal_edge_length)
         mesh.is_edge_length_achieved = true;
 
     bool is_push_new_edges = true;
