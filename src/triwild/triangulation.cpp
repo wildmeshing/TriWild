@@ -87,8 +87,25 @@ void triwild::triangulation::preprocessing(
 
   ////global parameters
   auto set_global_parameters = [&]() {
-    args.box_max = V.colwise().maxCoeff();
-    args.box_min = V.colwise().minCoeff();
+    if (V.size() > 0) {
+      args.box_max = V.colwise().maxCoeff();
+      args.box_min = V.colwise().minCoeff();
+    } else {
+      Eigen::MatrixXd tmp(feature::features.size() * 2, 2);
+      for (int i = 0; i < feature::features.size(); ++i) {
+        const auto &f = feature::features[i];
+        const double t0 = f->paras.empty() ? 0 : f->paras.front();
+        const double t1 = f->paras.empty() ? 1 : f->paras.back();
+        const auto p0 = f->eval(t0);
+        const auto p1 = f->eval(t1);
+        tmp.row(i * 2 + 0) << p0.x, p0.y;
+        tmp.row(i * 2 + 1) << p1.x, p1.y;
+      }
+
+      args.box_max = tmp.colwise().maxCoeff();
+      args.box_min = tmp.colwise().minCoeff();
+    }
+
     args.diagonal_len = (args.box_max - args.box_min).norm();
     if (args.target_edge_len == -1)
       args.target_edge_len =
@@ -170,8 +187,7 @@ void triwild::triangulation::preprocessing(
         }
       }
     }
-    if (V.size() > 0)
-      set_global_parameters();
+    set_global_parameters();
     feature::preprocessing(V, edges);
     cout << "refine:" << endl;
     cout << "#v " << old_cnt_v << "->" << V.rows() << endl;

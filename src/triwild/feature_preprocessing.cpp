@@ -37,10 +37,15 @@ void triwild::feature::preprocessing(Eigen::MatrixXd &V,
   //    for(auto& e:edges){
   //        e = {VI(e[0]), VI(e[1])};
   //    }
-
-  gen_segments(V, edges);
+  for (int i = 0; i < features.size(); i++) {
+    if (features[i]->paras.empty()) {
+      features[i]->paras = {0, 1};
+    }
+  }
 
   for (int i = 0; i < features.size(); i++) {
+    if (features[i]->v_ids.empty())
+      continue;
     // only for check
     {
       Point_2f p = features[i]->eval(0);
