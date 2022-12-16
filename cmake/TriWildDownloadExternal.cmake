@@ -36,7 +36,7 @@ endfunction()
 function(triwild_download_geogram)
     triwild_download_project(geogram
         GIT_REPOSITORY https://github.com/Yixin-Hu/geogram
-        GIT_TAG        3afe5c1c22a746e17be6c7b739af0c6e7f5ad5d4
+        GIT_TAG        b613750341a6cdd31ae8df80ecfc26ac7ca1a6ad
     )
 endfunction()
 
