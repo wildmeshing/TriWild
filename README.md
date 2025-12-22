@@ -56,7 +56,7 @@ Input: [19686 meshes (.obj) each with a curved feature file (.json)](https://dri
 
 Output with curved constrains: [19685 meshes (.msh)](https://drive.google.com/open?id=189OP5v5EJNP9QMqpWw_XuGRK_MjMThuJ)
 
-Output with linear constrains(todo James): [19686 meshes (.msh)]()
+Output with linear constrains: [19686 meshes (.msh)](https://archive.nyu.edu/handle/2451/61393)
 
 ## Installation
 
